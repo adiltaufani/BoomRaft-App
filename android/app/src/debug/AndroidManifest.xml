@@ -1,0 +1,42 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <application
+        android:label=""
+        tools:replace="android:label">
+        
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Midtrans activities with AppCompat Theme -->
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.banktransfer.list.BankTransferListActivity"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme">
+        </activity>
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.banktransfer.payment.BankTransferPaymentActivity"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme">
+        </activity>
+        <activity
+            android:name="com.midtrans.sdk.uikit.views.banktransfer.status.VaPaymentStatusActivity"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme">
+        </activity>
+        <activity
+            android:name="com.midtrans.sdk.uikit.activities.PaymentMethodsActivity"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme">
+        </activity>
+        <!-- Add any other Midtrans activities that require AppCompat theme -->
+
+    </application>
+</manifest>

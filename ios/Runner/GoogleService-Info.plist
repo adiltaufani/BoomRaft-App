@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>286340514293-s87q5nera1b602jes5av1jk3jo5ukv2t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.286340514293-s87q5nera1b602jes5av1jk3jo5ukv2t</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>286340514293-gqfsrt668iedqo0ff10bp7ql3fq428f7.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAsg2Yxm8q6yVG083EM69djR1nc4_wjN0A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>286340514293</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.flutterProject</string>
+	<key>PROJECT_ID</key>
+	<string>loginsignupta-prototype</string>
+	<key>STORAGE_BUCKET</key>
+	<string>loginsignupta-prototype.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:286340514293:ios:e06bab0d770a348886e0bc</string>
+	<key>DATABASE_URL</key>
+	<string>https://loginsignupta-prototype-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
