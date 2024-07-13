@@ -27,33 +27,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(0, 22, 119, 95),
+      backgroundColor: Color(0xFF50B498),
       body: Container(
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.only(right: 60),
-              child: Text(
-                'Pineus Tilu',
-                style: GoogleFonts.outfit(
-                  textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 60,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            Text(
-              'Book with Ease, Anytime, Anywhere!',
-              style: GoogleFonts.montserrat(
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
+              child: Image.asset(
+                'assets/images/logo_pineustilu_w.png',
               ),
             ),
             SizedBox(
@@ -68,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         horizontal: 30, vertical: 10),
                     child: CustomTextField(
                       controller: _emailController,
-                      hintText: 'E-mail',
+                      hintText: 'Email',
                     ),
                   ),
                   Container(
@@ -80,66 +62,32 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Container(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                    ),
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () {
                         if (_signInFormKey.currentState!.validate()) {
                           _signIn();
                         }
                       },
-                      child: const Text(
-                        'LOGIN',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                          fontFamily: 'OutfitBlod',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 150, vertical: 10),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: 370,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () => authService.signInWithGoogle(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        // Tetap gunakan padding yang sesuai
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 105, vertical: 10),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Widget untuk gambar
-                          Padding(
-                            padding: const EdgeInsets.only(right: 1.0),
-                            child: Image.asset(
-                              'assets/images/google-logo.png',
-                              width: 26,
-                              height: 26,
-                            ),
-                          ),
-                          // Widget untuk teks
                           Text(
-                            'Login with Google',
-                            style: GoogleFonts.raleway(
+                            'LOGIN',
+                            style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
+                                color: Color.fromARGB(255, 60, 129, 114),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
                           ),
@@ -150,15 +98,65 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 10,
                   ),
+                  Text(
+                    'or',
+                    style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () => authService.signInWithGoogle(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        // Tetap gunakan padding yang sesuai
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Widget untuk gambar
+                          Image.asset(
+                            'assets/images/google-logo.png',
+                            width: 26,
+                            height: 26,
+                          ),
+
+                          // Widget untuk teks
+                          Text(
+                            'Login with Google',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Don't have an accont?",
                         style: TextStyle(
                           fontFamily: 'OutfitBlod',
                           fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(255, 10, 97, 141),
+                          color: Color.fromARGB(255, 21, 120, 100),
                         ),
                       ),
                       SizedBox(
@@ -192,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                           fontFamily: 'OutfitBlod',
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF0077B2),
+                          color: Color.fromARGB(255, 21, 120, 100),
                         ),
                       ),
                       SizedBox(

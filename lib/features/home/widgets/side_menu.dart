@@ -42,7 +42,7 @@ class _SideMenuState extends State<SideMenu> {
     String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
 
     return Drawer(
-      backgroundColor: const Color(0xFF0A8ED9),
+      backgroundColor: const Color(0xFF50B498),
       child: SafeArea(
         child: ListView(
           padding: EdgeInsets.zero,

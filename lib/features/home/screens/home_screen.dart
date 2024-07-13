@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         child: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: Color(0xFF50B498),
             ),
           ),
           title: GestureDetector(
@@ -217,8 +217,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                     Image.asset(
-                      'assets/images/bookit.png',
-                      height: 20.0,
+                      'assets/images/logo_pineustilu.png',
+                      height: 44,
                     ),
                   ],
                 ),

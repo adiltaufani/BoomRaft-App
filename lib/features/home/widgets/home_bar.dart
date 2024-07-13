@@ -103,6 +103,16 @@ class _HomeBarState extends State<HomeBar> {
         child: Column(
           children: [
             Container(
+              height: 200,
+              width: double.maxFinite,
+              margin: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey,
+              ),
+              child: Image.asset('assets/images/rafting.jpg'),
+            ),
+            Container(
               margin: const EdgeInsets.fromLTRB(10.0, 16.0, 10.0, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

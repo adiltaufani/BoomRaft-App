@@ -16,33 +16,30 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      style: GoogleFonts.raleway(
+      style: GoogleFonts.montserrat(
         textStyle: const TextStyle(
-          color: Colors.white,
+          color: Color.fromARGB(255, 60, 129, 114),
           fontSize: 16,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.8,
+          fontWeight: FontWeight.w700,
         ),
       ),
       decoration: InputDecoration(
         hintText: hintText,
-        border: const OutlineInputBorder(
-            borderSide: BorderSide(
-          color: Color(0xFF0077B2),
-        )),
+        border: const OutlineInputBorder(),
         enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-          color: Color(0xFF0077B2),
+          color: Color(0x0077B2),
         )),
         focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-          color: Color.fromARGB(255, 0, 103, 154),
+          color: Color.fromARGB(210, 60, 129, 114),
+          width: 2,
         )),
         hintStyle: TextStyle(
-          color: Color(0xFF2FB0FA),
+          color: Color(0xFF468585).withOpacity(0.4),
           fontFamily: 'OutfitBlod',
         ),
-        fillColor: Color(0xFF0077B2).withOpacity(0.7),
+        fillColor: Color.fromARGB(255, 242, 252, 231),
         filled: true,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14.0, horizontal: 10),

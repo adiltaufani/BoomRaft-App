@@ -54,66 +54,44 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: const Color(0xFF50B498),
       body: Container(
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.only(right: 60),
-              child: Text(
-                'Book-it',
-                style: GoogleFonts.outfit(
-                  textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 60,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            Text(
-              'Book with Ease, Anytime, Anywhere!',
-              style: GoogleFonts.montserrat(
-                textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+                child: Image.asset(
+              'assets/images/logo_pineustilu_w.png',
+            )),
             const SizedBox(height: 20),
-            SizedBox(
-              width: 370,
+            Container(
               height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: ElevatedButton(
                 onPressed: () => authService.signInWithGoogle(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   // Tetap gunakan padding yang sesuai
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 105, vertical: 10),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Widget untuk gambar
-                    Padding(
-                      padding: const EdgeInsets.only(right: 1.0),
-                      child: Image.asset(
-                        'assets/images/google-logo.png',
-                        width: 24,
-                        height: 24,
-                      ),
+                    Image.asset(
+                      'assets/images/google-logo.png',
+                      width: 24,
+                      height: 24,
                     ),
                     // Widget untuk teks
-                    const Text(
+                    Text(
                       'Sign up with Google',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontFamily: 'OutfitBlod',
-                        fontWeight: FontWeight.w500,
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -137,7 +115,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.only(
-                              left: 38, right: 10, top: 10),
+                              left: 30, right: 10, top: 10),
                           child: CustomTextField(
                               controller: _nameController,
                               hintText: 'First Name'),
@@ -147,7 +125,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.only(
-                              left: 1, right: 38, top: 10),
+                              left: 1, right: 30, top: 10),
                           child: CustomTextField(
                               controller: _lastnameController,
                               hintText: 'Last Name'),
@@ -157,7 +135,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 38, vertical: 10),
+                        horizontal: 30, vertical: 10),
                     child: CustomTextField(
                       controller: _emailController,
                       hintText: 'E-mail',
@@ -165,7 +143,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 38, vertical: 0),
+                        const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
                     child: CustomPasswordField(
                       controller: _passwordController,
                       hintText: 'Password',
@@ -173,14 +151,20 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 38, vertical: 10),
+                        horizontal: 30, vertical: 10),
                     child: CustomPasswordField(
                       controller: _repeatpasswordController,
                       hintText: 'Repeat password',
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Container(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                    ),
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () {
                         if (_signUpFormKey.currentState!.validate()) {
@@ -189,17 +173,21 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 127, vertical: 10),
                       ),
-                      child: const Text(
-                        'SIGN UP',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                          fontFamily: 'OutfitBlod',
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'SIGN UP',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: Color.fromARGB(255, 60, 129, 114),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -214,7 +202,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: TextStyle(
                           fontFamily: 'OutfitBlod',
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF0077B2),
+                          color: Color.fromARGB(255, 21, 120, 100),
                         ),
                       ),
                       const SizedBox(
