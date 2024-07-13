@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_project/features/auth/widgets/custom_password_field.dart';
 import 'package:flutter_project/features/auth/widgets/custom_texfield.dart';
 import 'package:flutter_project/features/auth/screens/auth_screen.dart';
@@ -28,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Color.fromARGB(0, 22, 119, 95),
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -37,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: const EdgeInsets.only(right: 60),
               child: Text(
-                'Book-it',
+                'Pineus Tilu',
                 style: GoogleFonts.outfit(
                   textStyle: const TextStyle(
                     color: Colors.white,
