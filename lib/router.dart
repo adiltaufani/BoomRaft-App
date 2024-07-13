@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/features/auth/screens/auth_screen.dart';
 import 'package:flutter_project/features/auth/screens/login_screen.dart';
-import 'package:flutter_project/features/landmark/screens/landmark_nav.dart';
 import 'package:flutter_project/features/message/screens/message_chat_screen.dart';
 import 'package:flutter_project/features/booking/screens/booking_page.dart';
 import 'package:flutter_project/features/chatAI/screens/aichat_page.dart';
 import 'package:flutter_project/features/home/screens/home_screen.dart';
 import 'package:flutter_project/features/home/screens/near_from_you.dart';
-import 'package:flutter_project/features/landmark/screens/landmark_screen.dart';
 import 'package:flutter_project/features/message/screens/message_screen.dart';
 import 'package:flutter_project/features/notification/screens/notification_page.dart';
 import 'package:flutter_project/features/notification/screens/payment_success.dart';
@@ -28,15 +26,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (_) => const AuthScreen(),
       );
-    case LandmarkNav.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => LandmarkNav(
-          lmName: '',
-          latitude: '',
-          longitude: '',
-        ),
-      );
+
     case BookingPage.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
@@ -144,11 +134,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           endDate: '',
         ),
       );
-    case LandmarkScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => const LandmarkScreen(),
-      );
+
     case WishlistScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,

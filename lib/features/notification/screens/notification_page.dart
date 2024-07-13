@@ -101,7 +101,7 @@ class _NotificationPageState extends State<NotificationPage> {
         child: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: Color(0xFF50B498),
             ),
           ),
           title: GestureDetector(

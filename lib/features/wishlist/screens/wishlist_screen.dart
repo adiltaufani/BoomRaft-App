@@ -71,7 +71,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         child: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: Color(0xFF50B498),
             ),
           ),
           title: GestureDetector(

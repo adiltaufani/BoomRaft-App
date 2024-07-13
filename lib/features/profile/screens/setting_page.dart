@@ -69,7 +69,7 @@ class _SettingPageState extends State<SettingPage> {
                 Container(
                   height: 180,
                   decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 220, 237, 255)),
+                      color: Color.fromARGB(255, 197, 227, 219)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,7 +124,7 @@ class _SettingPageState extends State<SettingPage> {
                                             style: GoogleFonts.montserrat(
                                                 textStyle: TextStyle(
                                               fontSize: 24,
-                                              color: Colors.lightBlue[500],
+                                              color: Color(0xFF50B498),
                                               fontWeight: FontWeight.w800,
                                             )),
                                           ),
@@ -133,7 +133,7 @@ class _SettingPageState extends State<SettingPage> {
                                             style: GoogleFonts.montserrat(
                                                 textStyle: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.lightBlue[400],
+                                              color: Color(0xFF50B498),
                                               fontWeight: FontWeight.w600,
                                             )),
                                           ),
@@ -145,7 +145,7 @@ class _SettingPageState extends State<SettingPage> {
                                     ),
                                     Icon(
                                       Icons.arrow_forward_ios_rounded,
-                                      color: Colors.lightBlue[500],
+                                      color: Color(0xFF50B498),
                                     ),
                                   ],
                                 ),

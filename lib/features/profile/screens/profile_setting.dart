@@ -73,7 +73,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
               children: [
                 Container(
                   height: 200, // Sesuaikan dengan tinggi gambar profil Anda
-                  color: Colors.lightBlue[600],
+                  color: Color(0xFF50B498),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +121,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                             padding: EdgeInsets.all(4),
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              color: Colors.blue,
+                                              color: Color(0xFF50B498),
                                             ),
                                             child: Icon(
                                               Icons.camera_alt,
@@ -261,7 +261,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                             backgroundColor:
                                                 MaterialStateProperty.all<
                                                     Color>(
-                                              Colors.blue,
+                                              Colors.green.shade700,
                                             ),
                                             foregroundColor:
                                                 MaterialStateProperty.all<

@@ -86,7 +86,7 @@ class _MessageInboxScreenState extends State<MessageInboxScreen> {
         child: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: const Color(0xFF50B498),
             ),
           ),
           title: Text(

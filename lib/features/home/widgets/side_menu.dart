@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/features/auth/services/auth/google_auth_service.dart';
 import 'package:flutter_project/features/chatAI/screens/aichat_page.dart';
 import 'package:flutter_project/features/home/screens/home_screen.dart';
-import 'package:flutter_project/features/landmark/screens/landmark_screen.dart';
 import 'package:flutter_project/features/message/screens/message_screen.dart';
 import 'package:flutter_project/features/notification/screens/notification_page.dart';
 import 'package:flutter_project/features/payment/screens/transaction_screen.dart';
@@ -90,7 +89,7 @@ class _SideMenuState extends State<SideMenu> {
                       backgroundImage: AssetImage('assets/images/profile.png'),
                     ),
                     title: Text(
-                      '-------',
+                      'Username',
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
                           color: Colors.white,
@@ -101,7 +100,7 @@ class _SideMenuState extends State<SideMenu> {
                       ),
                     ),
                     subtitle: Text(
-                      '--------',
+                      'Email',
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
                           color: Colors.white60,
@@ -123,13 +122,6 @@ class _SideMenuState extends State<SideMenu> {
                     title: 'Home',
                     routeName: HomeScreen.routeName,
                     icon: Icons.home_filled,
-                    currentRoute: currentRoute,
-                  ),
-                  _buildListTile(
-                    context,
-                    title: 'Landmark',
-                    routeName: LandmarkScreen.routeName,
-                    icon: Icons.location_on_rounded,
                     currentRoute: currentRoute,
                   ),
                   const Padding(
