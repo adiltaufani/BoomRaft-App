@@ -103,14 +103,88 @@ class _HomeBarState extends State<HomeBar> {
         child: Column(
           children: [
             Container(
-              height: 200,
+              height: 260,
               width: double.maxFinite,
-              margin: EdgeInsets.all(20),
+              margin: EdgeInsets.all(15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.grey,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/rafting.jpg'),
+                    fit: BoxFit.cover),
               ),
-              child: Image.asset('assets/images/rafting.jpg'),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 260,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            Colors.black87.withOpacity(0.4)
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter),
+                    ),
+                  ),
+                  Positioned(
+                    left: 20,
+                    bottom: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 270),
+                          child: Text(
+                            'Enjoy a trip with us exploring the Palayangan River !',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: -0.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Pangalengan, Bandung',
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.6,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: -0.8,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 15,
+                    right: 15,
+                    child: Container(
+                      height: 35,
+                      width: 35,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        size: 20,
+                        color: const Color.fromARGB(255, 27, 94, 32),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(10.0, 16.0, 10.0, 0),

@@ -238,13 +238,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     indicatorSize: TabBarIndicatorSize.label,
                     padding: const EdgeInsets.only(bottom: 10),
                     indicator: UnderlineTabIndicator(
-                        borderSide: BorderSide(color: Colors.blue, width: 4.6),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 27, 94, 32), width: 4.6),
                         borderRadius: BorderRadius.circular(10)),
                     dividerColor: Colors.black12,
                     tabs: [
                       Tab(
                         child: Text(
-                          'Apartement',
+                          'Rafting',
                           style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w700),
@@ -253,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       Tab(
                         child: Text(
-                          'Hotel',
+                          'Offroad',
                           style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w700),
@@ -262,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       Tab(
                         child: Text(
-                          'Villa',
+                          'Paintball',
                           style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w700),
