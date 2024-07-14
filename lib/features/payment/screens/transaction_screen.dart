@@ -167,7 +167,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFD2E9FF), // Warna gradient awal
+              Color(0xFFDDFFF1), // Warna gradient awal
               Color(0xFFFFFFFF), // Warna gradient akhir
             ],
             begin: Alignment.topLeft,
