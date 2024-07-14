@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/features/booking/screens/booking_page.dart';
 import 'package:flutter_project/features/home/screens/near_from_you.dart';
+import 'package:flutter_project/features/home/widgets/typeof_btn.dart';
 import 'package:flutter_project/features/wishlist/database/db_helper.dart';
 import 'package:flutter_project/features/wishlist/model/wishlist_model.dart';
 import 'package:flutter_project/variables.dart';
@@ -183,6 +184,41 @@ class _HomeBarState extends State<HomeBar> {
                       ),
                     ),
                   )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    'Best for you',
+                    style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -0.6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  TypeofBtn(),
+                  TypeofBtn(),
+                  TypeofBtn(),
                 ],
               ),
             ),

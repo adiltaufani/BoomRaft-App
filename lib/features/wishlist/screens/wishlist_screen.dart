@@ -171,18 +171,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/bookit.png',
-                    height: 24,
-                  )
-                ],
-              ),
-            ),
             Container(
               margin: const EdgeInsets.fromLTRB(16, 10, 20, 16),
               child: Row(
