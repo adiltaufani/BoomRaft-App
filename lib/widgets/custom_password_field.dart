@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomPasswordField extends StatefulWidget {
@@ -24,34 +25,38 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       obscureText: _obscureText,
       style: GoogleFonts.montserrat(
         textStyle: const TextStyle(
-          color: Color.fromARGB(255, 60, 129, 114),
+          color: AppTheme.darkBlue,
           fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
       ),
       decoration: InputDecoration(
         hintText: widget.hintText,
-        border: const OutlineInputBorder(),
-        enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-          color: Color(0x0077B2),
-        )),
-        focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-          color: Color.fromARGB(210, 60, 129, 114),
-          width: 2,
-        )),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12), // Atur corner radius di sini
+        ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xFF0F67B1),
+            )),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xFF0F67B1),
+              width: 1.8,
+            )),
         hintStyle: TextStyle(
-          color: Color(0xFF468585).withOpacity(0.4),
+          color: AppTheme.darkBlue.withOpacity(0.4),
           fontFamily: 'OutfitBlod',
         ),
-        fillColor: Color.fromARGB(255, 242, 252, 231),
+        fillColor: const Color(0xFF96C9F4).withOpacity(0.6),
         filled: true,
-        contentPadding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 10),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
         suffixIcon: IconButton(
           icon: Icon(
             _obscureText ? Icons.visibility : Icons.visibility_off,
-            color: Colors.white.withOpacity(0.82),
+            color: AppTheme.darkBlue.withOpacity(0.82),
           ),
           onPressed: () {
             setState(() {

@@ -7,8 +7,11 @@ import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/services/firebase_auth_service.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/screens/home_screen.dart';
-import 'package:flutter_project/variables.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_project/models/user_model.dart';
+import 'package:flutter_project/services/http_service.dart';
+
 import 'package:http/http.dart' as http;
 
 enum Auth {
@@ -54,7 +57,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFDEC55),
+      backgroundColor: AppTheme.darkYellow,
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -111,11 +114,12 @@ class _AuthScreenState extends State<AuthScreen> {
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 30, right: 10, top: 10),
+                          padding:
+                              const EdgeInsets.only(left: 34, right: 5, top: 8),
                           child: CustomTextField(
                               controller: _nameController,
                               hintText: 'First Name'),
@@ -124,8 +128,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       // Spasi antara dua TextField
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 1, right: 30, top: 10),
+                          padding:
+                              const EdgeInsets.only(right: 34, left: 5, top: 8),
                           child: CustomTextField(
                               controller: _lastnameController,
                               hintText: 'Last Name'),
@@ -135,7 +139,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10),
+                        horizontal: 34, vertical: 15),
                     child: CustomTextField(
                       controller: _emailController,
                       hintText: 'E-mail',
@@ -143,7 +147,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+                        const EdgeInsets.symmetric(horizontal: 34, vertical: 0),
                     child: CustomPasswordField(
                       controller: _passwordController,
                       hintText: 'Password',
@@ -151,14 +155,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10),
+                        horizontal: 34, vertical: 15),
                     child: CustomPasswordField(
                       controller: _repeatpasswordController,
                       hintText: 'Repeat password',
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -172,7 +176,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor: AppTheme.darkBlue,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +188,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             'SIGN UP',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
-                                color: Color.fromARGB(255, 60, 129, 114),
+                                color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -192,17 +199,19 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         'Already have an accont?',
-                        style: TextStyle(
-                          fontFamily: 'OutfitBlod',
-                          fontWeight: FontWeight.w500,
-                          color: Color.fromARGB(255, 21, 120, 100),
+                        style: GoogleFonts.outfit(
+                          textStyle: TextStyle(
+                            color: const Color(0xFF3FA2F6).withOpacity(0.5),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -212,12 +221,14 @@ class _AuthScreenState extends State<AuthScreen> {
                         onTap: () {
                           Navigator.pushNamed(context, LoginScreen.routeName);
                         },
-                        child: const Text(
+                        child: Text(
                           'Login',
-                          style: TextStyle(
-                            fontFamily: 'OutfitBlod',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                          style: GoogleFonts.outfit(
+                            textStyle: const TextStyle(
+                              color: AppTheme.darkBlue,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       )
@@ -232,53 +243,87 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Future<void> register() async {
-    var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/register.php");
-    String firstName = _nameController.text;
-    String lastName = _lastnameController.text;
-    String email = _emailController.text;
-
-    User? user = FirebaseAuth.instance.currentUser;
-    String uid = user!.uid;
-
-    final response = await http.post(
-      Uri.parse('${ipaddr}/ta_projek/crudtaprojek/register.php'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({
-        'nama': firstName + lastName,
-        'firstname': firstName,
-        'lastname': lastName,
-        'email': email,
-        'uid': uid,
-      }),
-    );
-
-    var data = json.decode(response.body);
-    if (data == "Error") {
-      // User already exist
-      print("User already exists");
-    } else {
-      // Registration successful
-      print("Registration successful");
-    }
-  }
+  final HttpService _httpService = HttpService();
 
   Future _signUp() async {
     String email = _emailController.text;
     String password = _passwordController.text;
     String firstName = _nameController.text;
     String lastName = _lastnameController.text;
+
     User? user = await _auth.signUpWithEmailAndPassword(
         email, password, firstName, lastName);
 
     if (user != null) {
-      register();
-      Navigator.pushNamed(context, HomeScreen.routeName);
-      print("Succesfully created");
+      UserModel newUser = UserModel(
+        uid: user.uid,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      );
+
+      // Menggunakan HttpService untuk melakukan request pendaftaran
+      String response = await _httpService.registerUser(newUser);
+
+      if (response == "Success") {
+        Navigator.pushNamed(context, HomeScreen.routeName);
+        print("Successfully created");
+      } else {
+        print("Error: $response");
+      }
     } else {
       print('some error occured');
     }
   }
+
+  //  FUNGSI SEBELUMNYA
+  //
+  // Future<void> register() async {
+  //   var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/register.php");
+  //   String firstName = _nameController.text;
+  //   String lastName = _lastnameController.text;
+  //   String email = _emailController.text;
+
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   String uid = user!.uid;
+
+  //   final response = await http.post(
+  //     Uri.parse('${ipaddr}/ta_projek/crudtaprojek/register.php'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: jsonEncode({
+  //       'nama': firstName + lastName,
+  //       'firstname': firstName,
+  //       'lastname': lastName,
+  //       'email': email,
+  //       'uid': uid,
+  //     }),
+  //   );
+
+  //   var data = json.decode(response.body);
+  //   if (data == "Error") {
+  //     // User already exist
+  //     print("User already exists");
+  //   } else {
+  //     // Registration successful
+  //     print("Registration successful");
+  //   }
+  // }
+  // Future _signUp() async {
+  //   String email = _emailController.text;
+  //   String password = _passwordController.text;
+  //   String firstName = _nameController.text;
+  //   String lastName = _lastnameController.text;
+  //   User? user = await _auth.signUpWithEmailAndPassword(
+  //       email, password, firstName, lastName);
+
+  //   if (user != null) {
+  //     register();
+  //     Navigator.pushNamed(context, HomeScreen.routeName);
+  //     print("Succesfully created");
+  //   } else {
+  //     print('some error occured');
+  //   }
+  // }
 }
