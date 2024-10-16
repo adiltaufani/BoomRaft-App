@@ -40,7 +40,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_dotenv: ^5.1.0
   midtrans_sdk: ^0.4.0
-  fluttertoast: ^8.2.5
+  fluttertoast: ^8.2.8
   shimmer_pro: ^0.0.6
   shimmer: ^3.0.0
     

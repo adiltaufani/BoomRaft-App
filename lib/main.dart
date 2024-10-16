@@ -4,13 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
-import 'package:flutter_project/features/auth/screens/login_screen.dart';
-import 'package:flutter_project/features/home/screens/home_screen.dart';
-import 'package:flutter_project/features/chatAI/widgets/consts.dart';
-import 'package:flutter_project/features/message/screens/message_screen.dart';
-import 'package:flutter_project/features/profile/screens/profile_setting.dart';
+import 'package:flutter_project/screens/login_screen.dart';
+import 'package:flutter_project/screens/home_screen.dart';
+import 'package:flutter_project/zzunused/chatAI/widgets/consts.dart';
+import 'package:flutter_project/zzunused/message/screens/message_screen.dart';
+import 'package:flutter_project/screens/profile_setting.dart';
 import 'package:flutter_project/firebase_options.dart';
-import 'package:flutter_project/router.dart';
+import 'package:flutter_project/routes/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 void main() async {
