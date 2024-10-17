@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project/widgets/custom_texfield.dart';
+import 'package:flutter_project/widgets/auth_texfield.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:get/get.dart';
@@ -53,7 +53,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 10),
-                    child: CustomTextField(
+                    child: AuthTextField(
                       controller: _emailController,
                       hintText: 'E-mail',
                     ),

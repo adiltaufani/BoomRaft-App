@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/screens/home_screen.dart';
+import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/zzunused/chatAI/widgets/consts.dart';
 import 'package:flutter_project/zzunused/message/screens/message_screen.dart';
 import 'package:flutter_project/screens/profile_setting.dart';
@@ -63,8 +64,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             onGenerateRoute: (settings) => generateRoute(settings),
             home: snapshot.data == null
-                ? LoginScreen()
-                : HomeScreen(), // Redirect to appropriate screen based on auth state
+                ? MainScreen()
+                : LoginScreen(), // Redirect to appropriate screen based on auth state
           );
         }
       },

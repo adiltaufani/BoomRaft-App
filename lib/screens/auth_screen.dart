@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project/widgets/custom_password_field.dart';
-import 'package:flutter_project/widgets/custom_texfield.dart';
+import 'package:flutter_project/widgets/auth_password_field.dart';
+import 'package:flutter_project/widgets/auth_texfield.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/services/firebase_auth_service.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
@@ -58,186 +58,214 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.darkYellow,
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                child: Image.asset(
-              'assets/images/logo_pineustilu_w.png',
-            )),
-            const SizedBox(height: 20),
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: ElevatedButton(
-                onPressed: () => authService.signInWithGoogle(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  // Tetap gunakan padding yang sesuai
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Widget untuk gambar
-                    Image.asset(
-                      'assets/images/google-logo.png',
-                      width: 24,
-                      height: 24,
-                    ),
-                    // Widget untuk teks
-                    Text(
-                      'Sign up with Google',
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 80,
               ),
-            ),
-            const Text(
-              'or',
-              style: TextStyle(
-                fontFamily: 'OutfitBlod',
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            ),
-            Form(
-              key: _signUpFormKey,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding:
-                              const EdgeInsets.only(left: 34, right: 5, top: 8),
-                          child: CustomTextField(
-                              controller: _nameController,
-                              hintText: 'First Name'),
-                        ),
-                      ),
-                      // Spasi antara dua TextField
-                      Expanded(
-                        child: Container(
-                          padding:
-                              const EdgeInsets.only(right: 34, left: 5, top: 8),
-                          child: CustomTextField(
-                              controller: _lastnameController,
-                              hintText: 'Last Name'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 34, vertical: 15),
-                    child: CustomTextField(
-                      controller: _emailController,
-                      hintText: 'E-mail',
+              Container(
+                  margin: EdgeInsets.all(30),
+                  child: Image.asset(
+                    'assets/images/boom_raft_logo.png',
+                    height: 110,
+                  )),
+              const SizedBox(height: 20),
+              Container(
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: ElevatedButton(
+                  onPressed: () => authService.signInWithGoogle(context),
+                  style: ElevatedButton.styleFrom(
+                    side: const BorderSide(
+                        color: Colors.black38,
+                        width: 1.8,
+                        strokeAlign: BorderSide.strokeAlignOutside),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
+                    backgroundColor: Colors.white,
+
+                    // Tetap gunakan padding yang sesuai
                   ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 34, vertical: 0),
-                    child: CustomPasswordField(
-                      controller: _passwordController,
-                      hintText: 'Password',
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 34, vertical: 15),
-                    child: CustomPasswordField(
-                      controller: _repeatpasswordController,
-                      hintText: 'Repeat password',
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                    ),
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_signUpFormKey.currentState!.validate()) {
-                          _signUp();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        backgroundColor: AppTheme.darkBlue,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'SIGN UP',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // Widget untuk gambar
+                      Image.asset(
+                        'assets/images/google-logo.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      // Widget untuk teks
                       Text(
-                        'Already have an accont?',
-                        style: GoogleFonts.outfit(
-                          textStyle: TextStyle(
-                            color: const Color(0xFF3FA2F6).withOpacity(0.5),
-                            fontSize: 14,
+                        'Sign up with Google',
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 3,
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'or',
+                style: GoogleFonts.outfit(
+                  textStyle: const TextStyle(
+                    color: AppTheme.darkBlue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Form(
+                key: _signUpFormKey,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 34, right: 5, top: 10),
+                            child: AuthTextField(
+                                controller: _nameController,
+                                hintText: 'First Name'),
+                          ),
+                        ),
+                        // Spasi antara dua TextField
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                right: 34, left: 5, top: 8),
+                            child: AuthTextField(
+                                controller: _lastnameController,
+                                hintText: 'Last Name'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 34, vertical: 15),
+                      child: AuthTextField(
+                        controller: _emailController,
+                        hintText: 'E-mail',
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, LoginScreen.routeName);
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 34, vertical: 0),
+                      child: AuthPasswordField(
+                        controller: _passwordController,
+                        hintText: 'Password',
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 34, vertical: 15),
+                      child: AuthPasswordField(
+                        controller: _repeatpasswordController,
+                        hintText: 'Repeat password',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                      ),
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_signUpFormKey.currentState!.validate()) {
+                            _signUp();
+                          }
                         },
-                        child: Text(
-                          'Login',
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          backgroundColor: AppTheme.darkBlue,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'SIGN UP',
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an accont?',
                           style: GoogleFonts.outfit(
-                            textStyle: const TextStyle(
-                              color: AppTheme.darkBlue,
+                            textStyle: TextStyle(
+                              color: const Color(0xFF3FA2F6).withOpacity(0.5),
                               fontSize: 14,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, LoginScreen.routeName);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 8.0, top: 5, bottom: 5),
+                            child: Text(
+                              'Login',
+                              style: GoogleFonts.outfit(
+                                textStyle: const TextStyle(
+                                  color: AppTheme.darkBlue,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

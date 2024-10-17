@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomTextField extends StatelessWidget {
+class AuthPasswordField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  final int maxLines;
-  const CustomTextField({
-    super.key,
+  const AuthPasswordField({
+    Key? key,
     required this.controller,
     required this.hintText,
-    this.maxLines = 1,
-  });
+  }) : super(key: key);
+
+  @override
+  _AuthPasswordFieldState createState() => _AuthPasswordFieldState();
+}
+
+class _AuthPasswordFieldState extends State<AuthPasswordField> {
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
+      controller: widget.controller,
+      obscureText: _obscureText,
       style: GoogleFonts.montserrat(
         textStyle: const TextStyle(
-          color: Color(0xFF0F67B1),
+          color: AppTheme.darkBlue,
           fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
       ),
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12), // Atur corner radius di sini
         ),
@@ -40,21 +47,30 @@ class CustomTextField extends StatelessWidget {
               width: 1.8,
             )),
         hintStyle: TextStyle(
-          color: const Color(0xFF0F67B1).withOpacity(0.4),
+          color: AppTheme.darkBlue.withOpacity(0.4),
           fontFamily: 'OutfitBlod',
         ),
         fillColor: const Color(0xFF96C9F4).withOpacity(0.6),
         filled: true,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+            color: AppTheme.darkBlue.withOpacity(0.82),
+          ),
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+        ),
       ),
       validator: (val) {
         if (val == null || val.isEmpty) {
-          return 'Enter your $hintText';
+          return 'Enter your ${widget.hintText}';
         }
         return null;
       },
-      maxLines: maxLines,
     );
   }
 }

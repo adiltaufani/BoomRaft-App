@@ -34,8 +34,6 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: SideMenu(),
-      drawerScrimColor: Colors.black38,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(

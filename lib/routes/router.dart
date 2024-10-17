@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/auth_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
+import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/zzunused/message/screens/message_chat_screen.dart';
 import 'package:flutter_project/screens/booking_page.dart';
 import 'package:flutter_project/zzunused/chatAI/screens/aichat_page.dart';
@@ -167,6 +168,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const ProfileSetting(),
+      );
+    case MainScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const MainScreen(),
       );
     case HomeScreen.routeName:
       return MaterialPageRoute(

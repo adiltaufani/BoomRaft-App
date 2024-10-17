@@ -2,20 +2,26 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/screens/contactus_screen.dart';
+import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
-import 'package:flutter_project/zzunused/chatAI/screens/aichat_page.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/screens/home_screen.dart';
-import 'package:flutter_project/zzunused/message/screens/message_screen.dart';
 import 'package:flutter_project/screens/notification_page.dart';
 import 'package:flutter_project/screens/transaction_screen.dart';
 import 'package:flutter_project/screens/setting_page.dart';
-import 'package:flutter_project/zzunused/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class SideMenu extends StatefulWidget {
-  SideMenu({super.key});
+  final Function(Widget) onMenuItemClicked;
+  final String currentScreenName; // Terima currentScreenName dari parent
+
+  SideMenu(
+      {super.key,
+      required this.onMenuItemClicked,
+      required this.currentScreenName});
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -38,10 +44,8 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    String currentRoute = ModalRoute.of(context)?.settings.name ?? '';
-
     return Drawer(
-      backgroundColor: const Color(0xFF50B498),
+      backgroundColor: Colors.white,
       child: SafeArea(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -60,7 +64,7 @@ class _SideMenuState extends State<SideMenu> {
                       firstname,
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
-                          color: Colors.white,
+                          color: AppTheme.darkYellow,
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,
                           letterSpacing: -0.5,
@@ -71,7 +75,7 @@ class _SideMenuState extends State<SideMenu> {
                       email,
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
-                          color: Colors.white60,
+                          color: AppTheme.darkYellow,
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,
                           letterSpacing: -0.5,
@@ -79,125 +83,103 @@ class _SideMenuState extends State<SideMenu> {
                       ),
                     ),
                   )
-                : ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, SettingPage.routeName);
-                    },
-                    leading: const CircleAvatar(
-                      radius: 26,
-                      backgroundColor: Colors.white30,
-                      backgroundImage: AssetImage('assets/images/profile.png'),
-                    ),
-                    title: Text(
-                      'Username',
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.5,
+                : Stack(
+                    children: [
+                      Container(
+                        color: AppTheme.darkBlue,
+                        height: 88,
+                        width: 1000,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.pushNamed(context, SettingPage.routeName);
+                          },
+                          leading: const CircleAvatar(
+                            radius: 28,
+                            backgroundColor: Colors.white30,
+                            backgroundImage:
+                                AssetImage('assets/images/profile.png'),
+                          ),
+                          title: Text(
+                            'Username',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: AppTheme.darkYellow,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Email',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: AppTheme.darkYellow,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    subtitle: Text(
-                      'Email',
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                          color: Colors.white60,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
-            const Divider(
-              color: Colors.white38,
-            ),
             SingleChildScrollView(
               child: Column(
                 children: [
                   _buildListTile(
                     context,
                     title: 'Home',
-                    routeName: HomeScreen.routeName,
+                    screenWidget: HomeScreen(),
                     icon: Icons.home_filled,
-                    currentRoute: currentRoute,
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      color: Colors.white24,
-                    ),
-                  ),
-                  _buildListTile(
-                    context,
-                    title: 'Wishlist',
-                    routeName: WishlistScreen.routeName,
-                    icon: Icons.bookmark_rounded,
-                    currentRoute: currentRoute,
+                    padding: EdgeInsets.only(right: 40.0),
+                    child: Divider(color: AppTheme.darkBlue),
                   ),
                   _buildListTile(
                     context,
                     title: 'Notification',
-                    routeName: NotificationPage.routeName,
+                    screenWidget: NotificationPage(),
                     icon: Icons.notifications_rounded,
-                    currentRoute: currentRoute,
                   ),
                   _buildListTile(
                     context,
                     title: 'Transaction',
-                    routeName: TransactionScreen.routeName,
+                    screenWidget: TransactionScreen(),
                     icon: Icons.notes_rounded,
-                    currentRoute: currentRoute,
                   ),
                   _buildListTile(
                     context,
-                    title: 'Message',
-                    routeName: MessageScreen.routeName,
+                    title: 'Contact Us',
+                    screenWidget: ContactusScreen(),
                     icon: Icons.message_rounded,
-                    currentRoute: currentRoute,
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      color: Colors.white24,
-                    ),
-                  ),
-                  _buildListTile(
-                    context,
-                    title: 'AI Support',
-                    routeName: AIChatPage.routeName,
-                    icon: null,
-                    iconAsset: 'assets/images/chatai.png',
-                    currentRoute: currentRoute,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Divider(
-                      color: Colors.white24,
-                    ),
+                    padding: EdgeInsets.only(right: 40.0),
+                    child: Divider(color: AppTheme.darkBlue),
                   ),
                   _buildListTile(
                     context,
                     title: 'Setting',
-                    routeName: SettingPage.routeName,
+                    screenWidget: SettingPage(),
                     icon: Icons.settings_rounded,
-                    currentRoute: currentRoute,
                   ),
                   _buildListTile(
                     context,
                     title: 'Help',
-                    routeName: '',
+                    screenWidget: SettingPage(),
                     icon: Icons.help_outline_rounded,
-                    currentRoute: currentRoute,
                   ),
                   _buildListTile(
                     context,
                     title: 'Logout',
-                    routeName: '',
+                    screenWidget: LoginScreen(),
                     icon: Icons.login_rounded,
-                    currentRoute: currentRoute,
                     onTap: () {
                       authService.signOut(context);
                     },
@@ -211,46 +193,73 @@ class _SideMenuState extends State<SideMenu> {
     );
   }
 
-  Widget _buildListTile(BuildContext context,
-      {required String title,
-      required String routeName,
-      IconData? icon,
-      String? iconAsset,
-      required String currentRoute,
-      VoidCallback? onTap}) {
-    bool isSelected = currentRoute == routeName;
-    return ListTile(
-      onTap: onTap ??
-          () {
-            Navigator.pushNamed(context, routeName);
-          },
-      leading: icon != null
-          ? SizedBox(
-              height: 36,
-              width: 36,
-              child: Icon(
-                icon,
-                color: Colors.white,
-              ),
-            )
-          : SizedBox(
-              height: 36,
-              width: 36,
-              child: Image.asset(
-                iconAsset!,
-                scale: 2.4,
+  Widget _buildListTile(
+    BuildContext context, {
+    required String title,
+    required Widget screenWidget,
+    IconData? icon,
+    String? iconAsset,
+    VoidCallback? onTap,
+  }) {
+    // Ambil currentScreenName dari widget
+    bool isSelected =
+        widget.currentScreenName == screenWidget.runtimeType.toString();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 8),
+            height: 54,
+            width: 218,
+            decoration: BoxDecoration(
+                color: isSelected ? AppTheme.darkYellow : Colors.white,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(24),
+                    bottomRight: Radius.circular(24))),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 6.0),
+            child: ListTile(
+              onTap: onTap ??
+                  () {
+                    widget.onMenuItemClicked(screenWidget);
+                    Future.delayed(const Duration(milliseconds: 100), () {
+                      Navigator.pop(context);
+                    });
+                  },
+              leading: icon != null
+                  ? SizedBox(
+                      height: 36,
+                      width: 36,
+                      child: Icon(
+                        icon,
+                        color: AppTheme.darkBlue,
+                      ),
+                    )
+                  : SizedBox(
+                      height: 36,
+                      width: 36,
+                      child: Image.asset(
+                        iconAsset!,
+                        scale: 2.4,
+                      ),
+                    ),
+              title: Text(
+                title,
+                style: GoogleFonts.raleway(
+                  textStyle: TextStyle(
+                    color: isSelected ? AppTheme.darkBlue : AppTheme.darkBlue,
+                    fontSize: isSelected ? 20 : 18,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                    letterSpacing: 0.2,
+                  ),
+                ),
               ),
             ),
-      title: Text(
-        title,
-        style: GoogleFonts.raleway(
-          textStyle: TextStyle(
-            color: isSelected ? Colors.white : Colors.white.withAlpha(960),
-            fontSize: isSelected ? 20 : 18,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-            letterSpacing: 0.2,
           ),
-        ),
+        ],
       ),
     );
   }
@@ -258,11 +267,9 @@ class _SideMenuState extends State<SideMenu> {
   Future<void> fetchUserData() async {
     var user = FirebaseAuth.instance.currentUser;
 
-    // Pastikan user sudah login
     if (user == null) {
-      // Jika user belum login, tampilkan pesan
       print("Silakan login terlebih dahulu");
-      return; // Keluar dari metode fetchUserData
+      return;
     }
 
     var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/view_data.php");
@@ -273,14 +280,11 @@ class _SideMenuState extends State<SideMenu> {
 
     var data = json.decode(response.body);
     if (data != null) {
-      // Data berhasil diterima, tampilkan firstname dan lastname
       firstname = data['firstname'];
       lastname = data['lastname'];
       email = data['email'];
       String cleanedUrlFoto = data['profile_picture'].replaceAll('\\', '');
       pp = await getImageUrl('images/image_$uid.jpg');
-      print('Firstname: $firstname, Lastname: $lastname');
-      // Lakukan apapun yang Anda ingin lakukan dengan data ini
       setState(() {
         isDataAvail = true;
       });
@@ -291,18 +295,11 @@ class _SideMenuState extends State<SideMenu> {
 
   Future<String> getImageUrl(String imagePath) async {
     try {
-      // Buat referensi Firebase Storage untuk gambar yang diunggah
       Reference ref = FirebaseStorage.instance.ref().child(imagePath);
-
-      // Dapatkan URL download gambar
       String imageUrl = await ref.getDownloadURL();
-
-      // Kembalikan URL download gambar
       return imageUrl;
     } catch (error) {
-      // Tangkap error dan kembalikan URL gambar default jika terjadi kesalahan
       print("Error: $error");
-      // Mengembalikan URL gambar default dari
       return "https://firebasestorage.googleapis.com/v0/b/loginsignupta-prototype.appspot.com/o/images%2Fdefault.webp?alt=media&token=0f99eb8a-be98-4f26-99b7-d71776562de9";
     }
   }

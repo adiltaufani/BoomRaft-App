@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/appbar_global.dart';
+import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/screens/notification_page.dart';
 import 'package:flutter_project/widgets/transaction_recent.dart';
@@ -70,98 +71,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: SideMenu(),
-      drawerScrimColor: Colors.black38,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF50B498),
-            ),
-          ),
-          title: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, SearchPageWidget.routeName);
-            },
-            child: Container(
-              width: double.infinity,
-              height: 40.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Icon(
-                      Icons.search,
-                      color: Colors.black26,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Search..',
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                          color: Colors.black26,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.6,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          leading: IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openDrawer();
-            },
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.white,
-              size: 30.0,
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, NotificationPage.routeName);
-              },
-              icon: Image.asset(
-                'assets/images/notification.png',
-                height: 34.0,
-              ),
-            ),
-            FutureBuilder<String?>(
-                future: ProfileDataManager.getProfilePic(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    return IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, SettingPage.routeName);
-                      },
-                      icon: CircleAvatar(
-                        radius: 26,
-                        backgroundColor: Colors.white30,
-                        backgroundImage: NetworkImage(snapshot.data!),
-                      ),
-                    );
-                  } else {
-                    return Text('no data');
-                  }
-                }),
-          ],
-        ),
-      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
