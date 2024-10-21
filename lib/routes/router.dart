@@ -32,9 +32,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => BookingPage(
-          locationAddress: 'Detailed Location Address\nLocation Address',
-          locationName: 'Location Name',
-          jumlah_reviewer: '',
           url_foto: '',
           hotel_id: '',
           latitude: '',
@@ -52,9 +49,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => PaymentPage(
           id: '',
           hotel_id: '',
-          nama_penginapan: '',
           hargaTotal: '',
-          lokasi: '',
           startDate: '',
           url_foto: '',
           endDate: '',
@@ -83,18 +78,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         ),
       );
 
-    case SearchPageWidget.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => const SearchPageWidget(),
-      );
-    case SearchPage.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => SearchPage(
-          namaKota: '',
-        ),
-      );
     // case LandmarkResult.routeName:
     //   return MaterialPageRoute(
     //     settings: routeSettings,
@@ -133,25 +116,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           nama_penginapan: '',
           startDate: '',
           endDate: '',
-        ),
-      );
-
-    case WishlistScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => const WishlistScreen(),
-      );
-    case MessageScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => const MessageScreen(),
-      );
-    case MessageInboxScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => MessageInboxScreen(
-          receiverEmail: '',
-          receiverID: '',
         ),
       );
     case TransactionScreen.routeName:

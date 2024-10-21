@@ -8,6 +8,7 @@ import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/services/notif_db_helper.dart';
 import 'package:flutter_project/models/notification_model.dart';
 import 'package:flutter_project/screens/setting_page.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/side_menu.dart';
 import 'package:flutter_project/zzunused/search/widgets/search_page_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -93,16 +94,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFFDDFFF1), // Warna gradient awal
-            Color(0xFFFFFFFF), // Warna gradient akhir
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+      decoration: const BoxDecoration(color: AppTheme.backgroundColor),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,10 +107,7 @@ class _NotificationPageState extends State<NotificationPage> {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      'assets/images/notif_black.png',
-                      height: 30,
-                    ),
+                    const Icon(Icons.notifications_rounded),
                     const SizedBox(width: 12),
                     Text(
                       'Notification',

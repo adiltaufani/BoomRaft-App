@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:flutter_project/screens/booking_page.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/screens/main_screen.dart';

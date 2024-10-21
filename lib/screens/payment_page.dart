@@ -13,8 +13,6 @@ class PaymentPage extends StatefulWidget {
   static const String routeName = '/payment-page';
   String id;
   String hotel_id;
-  String nama_penginapan;
-  String lokasi;
   String hargaTotal;
   String startDate;
   String endDate;
@@ -28,8 +26,6 @@ class PaymentPage extends StatefulWidget {
   PaymentPage({
     required this.id,
     required this.hotel_id,
-    required this.nama_penginapan,
-    required this.lokasi,
     required this.url_foto,
     required this.hargaTotal,
     required this.startDate,
@@ -95,7 +91,7 @@ class _PaymentPageState extends State<PaymentPage> {
         MaterialPageRoute(
           builder: (context) => PaymentUi(
             uid: uid,
-            productName: widget.nama_penginapan,
+            productName: ' widget.nama_penginapan',
             hargaTotal: widget.hargaTotal,
             customerName: '${_firstname} ${lastname}',
             customerPhone: number!,
@@ -209,7 +205,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${widget.nama_penginapan}',
+                                          'nama penginapan',
                                           style: GoogleFonts.montserrat(
                                             textStyle: const TextStyle(
                                               color: Colors.black87,
@@ -220,7 +216,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                           ),
                                         ),
                                         Text(
-                                          "${widget.lokasi}",
+                                          "lokasi",
                                           style: GoogleFonts.montserrat(
                                             textStyle: const TextStyle(
                                               color: Colors.black54,

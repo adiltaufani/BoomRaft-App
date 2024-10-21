@@ -4,6 +4,7 @@ import 'package:flutter_project/appbar_global.dart';
 import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/screens/notification_page.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/transaction_recent.dart';
 import 'package:flutter_project/screens/setting_page.dart';
 import 'package:flutter_project/widgets/side_menu.dart';
@@ -73,16 +74,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
       key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFDDFFF1), // Warna gradient awal
-              Color(0xFFFFFFFF), // Warna gradient akhir
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        decoration: const BoxDecoration(color: AppTheme.backgroundColor),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Container(
@@ -95,9 +87,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        'assets/images/transaction.png',
-                        height: 30,
+                      const Icon(
+                        Icons.notes_rounded,
                       ),
                       const SizedBox(width: 12),
                       Text(

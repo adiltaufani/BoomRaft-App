@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/themes/theme.dart';
-import 'package:flutter_project/widgets/typeof_btn.dart';
+import 'package:flutter_project/widgets/book_btn.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -132,9 +132,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     width: 15,
                   ),
-                  TypeofBtn(),
-                  TypeofBtn(),
-                  TypeofBtn(),
+                  //ubah ke GET nnt
+                  BookBtn(
+                      typeOfRafting: 'Small Raft',
+                      detail: '4 People',
+                      price: 'Rp. 700.000'),
+                  BookBtn(
+                      typeOfRafting: 'Medium Raft',
+                      detail: '5 People',
+                      price: 'Rp. 900.000'),
+                  BookBtn(
+                      typeOfRafting: 'Large Raft',
+                      detail: '6 People',
+                      price: 'Rp. 1.050.000'),
                 ],
               ),
             ),

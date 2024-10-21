@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/futniture_widget.dart';
 import 'package:flutter_project/zzunused/message/screens/message_chat_screen.dart';
 import 'package:flutter_project/screens/payment_page.dart';
@@ -21,9 +22,6 @@ class BookingPage extends StatefulWidget {
   static const String routeName = '/booking-page';
   BookingPage({
     Key? key,
-    required this.locationName,
-    required this.locationAddress,
-    required this.jumlah_reviewer,
     required this.url_foto,
     required this.hotel_id,
     required this.latitude,
@@ -37,9 +35,6 @@ class BookingPage extends StatefulWidget {
     this.tanggalAkhir,
   }) : super(key: key);
 
-  final String locationName;
-  final String locationAddress;
-  final String jumlah_reviewer;
   final String url_foto;
   final String hotel_id;
   final String latitude;
@@ -67,6 +62,8 @@ class _BookingPageState extends State<BookingPage> {
   String formattedTanggalbesok = '';
   String tanggalAwal = '';
   String tanggalAkhir = '';
+  bool docuCheckBox = false;
+
   late Future<Map<String, bool>> futureFurnitureData;
 
   List _Listdata = [];
@@ -163,14 +160,7 @@ class _BookingPageState extends State<BookingPage> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 167, 205, 239), // Warna gradient awal
-                  Color(0xFFFFFFFF), // Warna gradient akhir
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: AppTheme.backgroundColor,
             ),
           ),
           SingleChildScrollView(
@@ -254,8 +244,7 @@ class _BookingPageState extends State<BookingPage> {
                             Container(
                               constraints: const BoxConstraints(maxWidth: 332),
                               child: Text(
-                                widget.locationName,
-                                // _Listdata[index]['jumlah_reviewer'],
+                                'Boom Raft',
                                 style: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
                                       color: Colors.black,
@@ -264,112 +253,9 @@ class _BookingPageState extends State<BookingPage> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 6.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  fetchData(); // Memulai pengambilan data
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      // Membuat dialog
-                                      return FutureBuilder(
-                                        future: Future.delayed(Duration(
-                                            seconds:
-                                                2)), // Menunda dialog selama 2 detik
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<dynamic> snapshot) {
-                                          // Menampilkan pesan dialog
-                                          return AlertDialog(
-                                            title:
-                                                Text("Data Berhasil Disimpan"),
-                                            content: Text(
-                                                "Property Dimasukan ke Wishlist"),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Menutup dialog
-                                                },
-                                                child: Text("OK"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  );
-                                  setState(() {
-                                    _triggerList = !_triggerList;
-                                    if (_triggerList == true) {
-                                      wishlistTap();
-                                    }
-                                  });
-                                },
-                                child: _triggerList
-                                    ? Transform.scale(
-                                        scale: 1.5, // Besar ikon 1.5 kali lipat
-                                        child: Icon(
-                                          Icons.bookmark_rounded,
-                                          color: Colors.blueGrey,
-                                        ),
-                                      )
-                                    : Transform.scale(
-                                        scale: 1.5, // Besar ikon 1.5 kali lipat
-                                        child: Icon(
-                                          Icons.bookmark_rounded,
-                                          color: Colors.black12,
-                                        ),
-                                      ),
-                              ),
-                            ),
                           ],
                         ),
                         const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            const Icon(Icons.star, color: Color(0xFFDF9652)),
-                            const SizedBox(width: 6),
-                            Text(
-                              widget.jumlah_reviewer,
-                              // _Listdata[index]['jumlah_reviewer'],
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              color: Color(0xFF00A5EC),
-                            ),
-                            const SizedBox(width: 6),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 320),
-                                child: Text(
-                                  widget.locationAddress,
-                                  // _Listdata[index]['lokasi'],
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: Row(
@@ -413,54 +299,21 @@ class _BookingPageState extends State<BookingPage> {
                                   )
                                 ],
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MessageInboxScreen(
-                                        receiverEmail: widget.sellersEmail,
-                                        receiverID: widget.sellersUid,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.messenger_rounded,
-                                    color: Colors.blue.withOpacity(0.4),
-                                    size: 26,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
-                        Divider(),
-                        SizedBox(
+                        const Divider(),
+                        const SizedBox(
                           height: 8,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Text(
-                            'Description',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                color: Colors.black87,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
+
+                        const SizedBox(
                           height: 6,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
-                            '${id}Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                            'Nikmati pengalaman seru rafting di Sungai Cileunca dengan jarak sekitar 5 km, yang memakan waktu kurang lebih 1.5 hingga 2 jam. Anda akan melewati 20 jeram yang menantang. Kami menyediakan layanan antar jemput dari Pineus Tilu ke titik start rafting dan kembali ke Pineus Tilu setelah selesai rafting.',
                             // _Listdata[index]['lokasi'],
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
@@ -475,114 +328,7 @@ class _BookingPageState extends State<BookingPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
-                            'Facilities',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                color: Colors.black87,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [FurniturePage(id: widget.hotel_id)],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            'Location',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                color: Colors.black87,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              color: Color(0xFF00A5EC),
-                            ),
-                            const SizedBox(width: 2),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 320),
-                                child: Text(
-                                  widget.locationAddress,
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16.0),
-                        Material(
-                          color: Colors
-                              .transparent, // Ensure transparent background
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _openMap(lat, long);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0A8ED9),
-                              fixedSize: const Size(120, 34),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              elevation: 2,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6.0, vertical: 2.0),
-                              textStyle: const TextStyle(
-                                fontSize: 16.0, // Adjust font size
-                                fontWeight:
-                                    FontWeight.bold, // Adjust font weight
-                                color: Colors.white, // Use white text color
-                              ),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: Colors.white,
-                                  size: 15.0,
-                                ),
-                                SizedBox(width: 8.0),
-                                Text(
-                                  'View on Map',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            'Date of Your Stay',
+                            'Set Your Book',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                 color: Colors.black87,
@@ -622,11 +368,19 @@ class _BookingPageState extends State<BookingPage> {
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset: const Offset(1, 2),
+                                      ),
+                                    ],
                                     border: Border.all(
                                       color: _isdatechoosed
-                                          ? Colors.blue
-                                          : Colors.black45,
-                                      width: 2,
+                                          ? AppTheme.darkBlue
+                                          : Colors.black26,
+                                      width: 1,
                                     ),
                                   ),
                                   child: _isdatechoosed
@@ -635,15 +389,14 @@ class _BookingPageState extends State<BookingPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             const Icon(
-                                              Icons.calendar_month_rounded,
-                                              color: Color(0xFF0A8ED9),
-                                            ),
+                                                Icons.calendar_month_rounded,
+                                                color: AppTheme.darkBlue),
                                             const SizedBox(width: 4),
                                             Text(
                                               '${startdateNew} / ${enddateNew}',
                                               style: GoogleFonts.montserrat(
                                                 textStyle: const TextStyle(
-                                                  color: Colors.blue,
+                                                  color: AppTheme.darkBlue,
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,
                                                 ),
@@ -675,143 +428,145 @@ class _BookingPageState extends State<BookingPage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 6),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showCupertinoModalPopup(
-                                    context: context,
-                                    builder: (_) => SizedBox(
-                                      width: double.infinity,
-                                      height: 250,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: CupertinoPicker(
-                                              backgroundColor: Colors.white,
-                                              itemExtent: 30,
-                                              scrollController:
-                                                  FixedExtentScrollController(
-                                                initialItem: 0,
-                                              ),
-                                              children: const [
-                                                Text('0 Adult'),
-                                                Text('1 Adult'),
-                                                Text('2 Adult'),
-                                                Text('3 Adult'),
-                                                Text('4 Adult'),
-                                                Text('5 Adult'),
-                                                Text('6 Adult'),
-                                              ],
-                                              onSelectedItemChanged:
-                                                  (int value) {
-                                                setState(() {
-                                                  _selectedValueAdult = value;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: CupertinoPicker(
-                                              backgroundColor: Colors.white,
-                                              itemExtent: 30,
-                                              scrollController:
-                                                  FixedExtentScrollController(
-                                                initialItem: 0,
-                                              ),
-                                              children: const [
-                                                Text('0 Child'),
-                                                Text('1 Child'),
-                                                Text('2 Child'),
-                                                Text('3 Child'),
-                                                Text('4 Child'),
-                                                Text('5 Child'),
-                                                Text('6 Child'),
-                                              ],
-                                              onSelectedItemChanged:
-                                                  (int value) {
-                                                setState(() {
-                                                  _selectedValueChild = value;
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                  _ispersonchoosed = true;
-                                });
-                                //add person
-                              },
-                              child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  height: 54,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: _ispersonchoosed
-                                          ? Colors.blue
-                                          : Colors.black45,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: _ispersonchoosed
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.group_sharp,
-                                              color: Color(0xFF0A8ED9),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '${_selectedValueAdult} Adult, ${_selectedValueChild} Child',
-                                              style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                                  color: Colors.blue,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.group_sharp,
-                                              color: Colors.black45,
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              'Add Guest\'s',
-                                              style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                                  color: Colors.black45,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                            ),
-                          ),
-                        ),
+                        //ADD GUEST'S
+
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 10.0, vertical: 6),
+                        //   child: Material(
+                        //     color: Colors.transparent,
+                        //     child: InkWell(
+                        //       onTap: () {
+                        //         setState(() {
+                        //           showCupertinoModalPopup(
+                        //             context: context,
+                        //             builder: (_) => SizedBox(
+                        //               width: double.infinity,
+                        //               height: 250,
+                        //               child: Row(
+                        //                 children: [
+                        //                   Expanded(
+                        //                     child: CupertinoPicker(
+                        //                       backgroundColor: Colors.white,
+                        //                       itemExtent: 30,
+                        //                       scrollController:
+                        //                           FixedExtentScrollController(
+                        //                         initialItem: 0,
+                        //                       ),
+                        //                       children: const [
+                        //                         Text('0 Adult'),
+                        //                         Text('1 Adult'),
+                        //                         Text('2 Adult'),
+                        //                         Text('3 Adult'),
+                        //                         Text('4 Adult'),
+                        //                         Text('5 Adult'),
+                        //                         Text('6 Adult'),
+                        //                       ],
+                        //                       onSelectedItemChanged:
+                        //                           (int value) {
+                        //                         setState(() {
+                        //                           _selectedValueAdult = value;
+                        //                         });
+                        //                       },
+                        //                     ),
+                        //                   ),
+                        //                   Expanded(
+                        //                     child: CupertinoPicker(
+                        //                       backgroundColor: Colors.white,
+                        //                       itemExtent: 30,
+                        //                       scrollController:
+                        //                           FixedExtentScrollController(
+                        //                         initialItem: 0,
+                        //                       ),
+                        //                       children: const [
+                        //                         Text('0 Child'),
+                        //                         Text('1 Child'),
+                        //                         Text('2 Child'),
+                        //                         Text('3 Child'),
+                        //                         Text('4 Child'),
+                        //                         Text('5 Child'),
+                        //                         Text('6 Child'),
+                        //                       ],
+                        //                       onSelectedItemChanged:
+                        //                           (int value) {
+                        //                         setState(() {
+                        //                           _selectedValueChild = value;
+                        //                         });
+                        //                       },
+                        //                     ),
+                        //                   ),
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           );
+                        //           _ispersonchoosed = true;
+                        //         });
+                        //         //add person
+                        //       },
+                        //       child: AnimatedContainer(
+                        //           duration: const Duration(milliseconds: 200),
+                        //           height: 54,
+                        //           decoration: BoxDecoration(
+                        //             color: Colors.white,
+                        //             borderRadius: BorderRadius.circular(10),
+                        //             border: Border.all(
+                        //               color: _ispersonchoosed
+                        //                   ? Colors.blue
+                        //                   : Colors.black45,
+                        //               width: 2,
+                        //             ),
+                        //           ),
+                        //           child: _ispersonchoosed
+                        //               ? Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.center,
+                        //                   children: [
+                        //                     const Icon(
+                        //                       Icons.group_sharp,
+                        //                       color: Color(0xFF0A8ED9),
+                        //                     ),
+                        //                     const SizedBox(width: 4),
+                        //                     Text(
+                        //                       '${_selectedValueAdult} Adult, ${_selectedValueChild} Child',
+                        //                       style: GoogleFonts.montserrat(
+                        //                         textStyle: const TextStyle(
+                        //                           color: Colors.blue,
+                        //                           fontSize: 14,
+                        //                           fontWeight: FontWeight.w700,
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 )
+                        //               : Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.center,
+                        //                   children: [
+                        //                     const Icon(
+                        //                       Icons.group_sharp,
+                        //                       color: Colors.black45,
+                        //                     ),
+                        //                     const SizedBox(width: 4),
+                        //                     Text(
+                        //                       'Add Guest\'s',
+                        //                       style: GoogleFonts.montserrat(
+                        //                         textStyle: const TextStyle(
+                        //                           color: Colors.black45,
+                        //                           fontSize: 14,
+                        //                           fontWeight: FontWeight.w600,
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 )),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
-                            'Room Type',
+                            'Raft Type',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                 color: Colors.black87,
@@ -821,17 +576,13 @@ class _BookingPageState extends State<BookingPage> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: _Listdata.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: const EdgeInsets.fromLTRB(24, 0, 24, 20),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          width: double.maxFinite,
+                          height: 200,
                           decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.5),
@@ -843,356 +594,717 @@ class _BookingPageState extends State<BookingPage> {
                           ),
                           child: Column(
                             children: [
-                              ClipRect(
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  height: 190,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 142,
-                                                height: 102,
-                                                margin:
-                                                    const EdgeInsets.fromLTRB(
-                                                        12, 12, 2, 10),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadiusDirectional
-                                                          .circular(10),
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          'assets/images/room.jpeg'),
-                                                      fit: BoxFit.cover),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.fromLTRB(
-                                                        10, 12, 0, 10),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              _Listdata[index][
-                                                                  'tipe_kamar'],
-                                                              style: GoogleFonts
-                                                                  .montserrat(
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  letterSpacing:
-                                                                      -0.6,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          2.0),
-                                                              child: Container(
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                        maxWidth:
-                                                                            172),
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    const SizedBox(
-                                                                        height:
-                                                                            8),
-                                                                    Row(
-                                                                      children: [
-                                                                        const Icon(
-                                                                            Icons
-                                                                                .king_bed_rounded,
-                                                                            color:
-                                                                                Colors.black54,
-                                                                            size: 16),
-                                                                        const SizedBox(
-                                                                            width:
-                                                                                8),
-                                                                        Text(
-                                                                          "${_Listdata[index]['bedroom']} Bed",
-                                                                          style:
-                                                                              GoogleFonts.montserrat(
-                                                                            textStyle:
-                                                                                const TextStyle(
-                                                                              color: Colors.black54,
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w500,
-                                                                              letterSpacing: -0.6,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        const Icon(
-                                                                            Icons
-                                                                                .group_rounded,
-                                                                            color:
-                                                                                Colors.black54,
-                                                                            size: 16),
-                                                                        const SizedBox(
-                                                                            width:
-                                                                                8),
-                                                                        Text(
-                                                                          "${_Listdata[index]['kapasitas']} Guest's/Room",
-                                                                          style:
-                                                                              GoogleFonts.montserrat(
-                                                                            textStyle:
-                                                                                const TextStyle(
-                                                                              color: Colors.black54,
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w500,
-                                                                              letterSpacing: -0.6,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                12, 0, 0, 8),
-                                            child: Column(
+                              // Image.asset('name'),
+                            ],
+                          ),
+                        ),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _Listdata.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(24, 0, 24, 20),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(1, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    ClipRect(
+                                      child: AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        height: 190,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  'Total Payment',
-                                                  style: GoogleFonts.montserrat(
-                                                    textStyle: const TextStyle(
-                                                      color: Colors.black45,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      letterSpacing: -0.6,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text.rich(
-                                                  TextSpan(
-                                                      text:
-                                                          'Rp ${_Listdata[index]['harga']}/',
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        textStyle:
-                                                            const TextStyle(
-                                                          color:
-                                                              Color(0xFF225B7B),
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          letterSpacing: -0.6,
-                                                        ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: 142,
+                                                      height: 102,
+                                                      margin: const EdgeInsets
+                                                          .fromLTRB(
+                                                          12, 12, 2, 10),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadiusDirectional
+                                                                .circular(10),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'assets/images/room.jpeg'),
+                                                            fit: BoxFit.cover),
                                                       ),
-                                                      children: [
-                                                        TextSpan(
-                                                          text: 'Night',
-                                                          style: GoogleFonts
-                                                              .montserrat(
-                                                            textStyle:
-                                                                const TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
+                                                    ),
+                                                    Container(
+                                                      margin: const EdgeInsets
+                                                          .fromLTRB(
+                                                          10, 12, 0, 10),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    _Listdata[
+                                                                            index]
+                                                                        [
+                                                                        'tipe_kamar'],
+                                                                    style: GoogleFonts
+                                                                        .montserrat(
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        letterSpacing:
+                                                                            -0.6,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            2.0),
+                                                                    child:
+                                                                        Container(
+                                                                      constraints:
+                                                                          const BoxConstraints(
+                                                                              maxWidth: 172),
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          const SizedBox(
+                                                                              height: 8),
+                                                                          Row(
+                                                                            children: [
+                                                                              const Icon(Icons.king_bed_rounded, color: Colors.black54, size: 16),
+                                                                              const SizedBox(width: 8),
+                                                                              Text(
+                                                                                "${_Listdata[index]['bedroom']} Bed",
+                                                                                style: GoogleFonts.montserrat(
+                                                                                  textStyle: const TextStyle(
+                                                                                    color: Colors.black54,
+                                                                                    fontSize: 12,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    letterSpacing: -0.6,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              const Icon(Icons.group_rounded, color: Colors.black54, size: 16),
+                                                                              const SizedBox(width: 8),
+                                                                              Text(
+                                                                                "${_Listdata[index]['kapasitas']} Guest's/Room",
+                                                                                style: GoogleFonts.montserrat(
+                                                                                  textStyle: const TextStyle(
+                                                                                    color: Colors.black54,
+                                                                                    fontSize: 12,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    letterSpacing: -0.6,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
                                                           ),
-                                                        )
-                                                      ]),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 0, 8, 8),
-                                            child: booleanList[index]
-                                                ? ElevatedButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        booleanList[index] =
-                                                            false;
-                                                        hargaa =
-                                                            _Listdata[index]
-                                                                ['harga'];
-                                                        harga = double.parse(
-                                                            hargaa);
-                                                        totalHarga += harga;
-                                                        hargaFix =
-                                                            '$totalHarga';
-                                                        selectedRoomIds.add(
-                                                            _Listdata[index]
-                                                                ['id']);
-                                                        roomsIds =
-                                                            _Listdata[index]
-                                                                ['id'];
-                                                        print(
-                                                            '${totalHarga}, ${selectedRoomIds}');
-                                                      });
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFF225B7B),
-                                                      elevation: 2,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      'Select',
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        textStyle:
-                                                            const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          letterSpacing: -0.6,
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          12, 0, 0, 8),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'Total Payment',
+                                                        style: GoogleFonts
+                                                            .montserrat(
+                                                          textStyle:
+                                                              const TextStyle(
+                                                            color:
+                                                                Colors.black45,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            letterSpacing: -0.6,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  )
-                                                : ElevatedButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        booleanList[index] =
-                                                            true;
-                                                        hargaa =
-                                                            _Listdata[index]
-                                                                ['harga'];
-                                                        harga = double.parse(
-                                                            hargaa);
-                                                        totalHarga -= harga;
-                                                        hargaFix =
-                                                            '$totalHarga';
-                                                        selectedRoomIds.remove(
-                                                            _Listdata[index]
-                                                                ['id']);
-                                                        roomsIds = '';
-                                                        print(
-                                                            '${totalHarga}, ${selectedRoomIds}');
-                                                      });
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor: Colors
-                                                          .white
-                                                          .withOpacity(0.84),
-                                                      elevation: 2,
-                                                      side: BorderSide(
-                                                          color: const Color(
-                                                              0xFF225B7B),
-                                                          width: 1.0),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
+                                                      Text.rich(
+                                                        TextSpan(
+                                                            text:
+                                                                'Rp ${_Listdata[index]['harga']}/',
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                color: Color(
+                                                                    0xFF225B7B),
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                letterSpacing:
+                                                                    -0.6,
+                                                              ),
+                                                            ),
+                                                            children: [
+                                                              TextSpan(
+                                                                text: 'Night',
+                                                                style: GoogleFonts
+                                                                    .montserrat(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ]),
                                                       ),
-                                                    ),
-                                                    child: Text(
-                                                      'Selected',
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        textStyle:
-                                                            const TextStyle(
-                                                          color:
-                                                              Color(0xFF225B7B),
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          letterSpacing: -0.6,
-                                                        ),
-                                                      ),
-                                                    ),
+                                                    ],
                                                   ),
-                                          ),
-                                        ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 0, 8, 8),
+                                                  child: booleanList[index]
+                                                      ? ElevatedButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              booleanList[
+                                                                      index] =
+                                                                  false;
+                                                              hargaa =
+                                                                  _Listdata[
+                                                                          index]
+                                                                      ['harga'];
+                                                              harga =
+                                                                  double.parse(
+                                                                      hargaa);
+                                                              totalHarga +=
+                                                                  harga;
+                                                              hargaFix =
+                                                                  '$totalHarga';
+                                                              selectedRoomIds
+                                                                  .add(_Listdata[
+                                                                          index]
+                                                                      ['id']);
+                                                              roomsIds =
+                                                                  _Listdata[
+                                                                          index]
+                                                                      ['id'];
+                                                              print(
+                                                                  '${totalHarga}, ${selectedRoomIds}');
+                                                            });
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                const Color(
+                                                                    0xFF225B7B),
+                                                            elevation: 2,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            'Select',
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                letterSpacing:
+                                                                    -0.6,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : ElevatedButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              booleanList[
+                                                                  index] = true;
+                                                              hargaa =
+                                                                  _Listdata[
+                                                                          index]
+                                                                      ['harga'];
+                                                              harga =
+                                                                  double.parse(
+                                                                      hargaa);
+                                                              totalHarga -=
+                                                                  harga;
+                                                              hargaFix =
+                                                                  '$totalHarga';
+                                                              selectedRoomIds
+                                                                  .remove(_Listdata[
+                                                                          index]
+                                                                      ['id']);
+                                                              roomsIds = '';
+                                                              print(
+                                                                  '${totalHarga}, ${selectedRoomIds}');
+                                                            });
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.white
+                                                                    .withOpacity(
+                                                                        0.84),
+                                                            elevation: 2,
+                                                            side: BorderSide(
+                                                                color: const Color(
+                                                                    0xFF225B7B),
+                                                                width: 1.0),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            'Selected',
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                color: Color(
+                                                                    0xFF225B7B),
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                letterSpacing:
+                                                                    -0.6,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            'Total Participant',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          width: double.maxFinite,
+                          height: 220,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(1, 2),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.black38, width: 1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14.0, vertical: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Boat',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'Small Raft',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      ': X boat',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'Medium Raft',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      ': X boat',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'Large Raft',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      ': X boat',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Divider(
+                                    thickness: 0.7,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.people_rounded,
+                                          color: Colors.black87,
+                                          size: 28,
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          'Total',
+                                          style: GoogleFonts.montserrat(
+                                            textStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                          width: 60,
+                                          height: 50,
+                                          child: TextField(
+                                            textAlign: TextAlign.center,
+                                            decoration: InputDecoration(
+                                              hintText: '0',
+                                              hintStyle: GoogleFonts.montserrat(
+                                                textStyle: const TextStyle(
+                                                  color: Colors.black26,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              border:
+                                                  const UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.black54,
+                                                    width: 2),
+                                              ),
+                                              focusedBorder:
+                                                  const UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppTheme.darkBlue,
+                                                    width: 2),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          'Enter participant here',
+                                          style: GoogleFonts.montserrat(
+                                            textStyle: const TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          'Max Participant: X',
+                                          style: GoogleFonts.montserrat(
+                                            textStyle: const TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            'Total Participant',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          width: double.maxFinite,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(1, 2),
+                              ),
+                            ],
+                            border: Border.all(color: Colors.black38, width: 1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Transform.scale(
+                                scale: 1.3,
+                                child: Checkbox(
+                                  value: docuCheckBox,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      docuCheckBox = value ?? false;
+                                    });
+                                  },
+                                  activeColor: AppTheme.darkBlue,
+                                  side: const BorderSide(
+                                    color: Colors.black54,
                                   ),
                                 ),
                               ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Documentation',
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '+ Rp. 100.000,00',
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
                             ],
                           ),
-                        );
-                      }),
+                        )
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 64),
                 ],
               ),
@@ -1205,41 +1317,59 @@ class _BookingPageState extends State<BookingPage> {
             child: ElevatedButton(
               onPressed: () {
                 if (_selectedValueAdult == 0 || totalHarga == 0) {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Input Tidak Sesuai'),
-                          content: Text(
-                              'Mohon piih tanggal, jumlah orang, dan pilih kamar'),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('ok'))
-                          ],
-                        );
-                      });
+                  //CODE TEST
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PaymentPage(
+                        id: roomsIds,
+                        hotel_id: widget.hotel_id,
+                        url_foto: widget.url_foto,
+                        hargaTotal: hargaFix,
+                        startDate: startdateNew,
+                        endDate: enddateNew,
+                        adultValue: _selectedValueAdult,
+                        childValue: _selectedValueChild,
+                        dbstartDate: formattedTanggal,
+                        dbendDate: formattedTanggalbesok,
+                        sellersid: widget.sellersid,
+                      ),
+                    ),
+                  );
+
+                  //CODE BENER
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return AlertDialog(
+                  //         title: Text('Input Tidak Sesuai'),
+                  //         content: Text(
+                  //             'Mohon piih tanggal, jumlah orang, dan pilih kamar'),
+                  //         actions: [
+                  //           TextButton(
+                  //               onPressed: () {
+                  //                 Navigator.pop(context);
+                  //               },
+                  //               child: Text('ok'))
+                  //         ],
+                  //       );
+                  //     });
                 } else {
                   if (widget.tanggalAwal == null &&
                       widget.tanggalAkhir == null) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => PaymentPage(
-                          id: roomsIds,
-                          hotel_id: widget.hotel_id,
-                          url_foto: widget.url_foto,
-                          nama_penginapan: widget.locationName,
-                          lokasi: widget.locationAddress,
-                          hargaTotal: hargaFix,
-                          startDate: startdateNew,
-                          endDate: enddateNew,
-                          adultValue: _selectedValueAdult,
-                          childValue: _selectedValueChild,
-                          dbstartDate: formattedTanggal,
-                          dbendDate: formattedTanggalbesok,
-                          sellersid: widget.sellersid,
+                          id: '',
+                          hotel_id: '',
+                          hargaTotal: '',
+                          startDate: '',
+                          url_foto: '',
+                          endDate: '',
+                          adultValue: 0,
+                          childValue: 0,
+                          sellersid: '',
+                          dbendDate: '',
+                          dbstartDate: '',
                         ),
                       ),
                     );
@@ -1250,8 +1380,6 @@ class _BookingPageState extends State<BookingPage> {
                           id: roomsIds,
                           hotel_id: widget.hotel_id,
                           url_foto: widget.url_foto,
-                          nama_penginapan: widget.locationName,
-                          lokasi: widget.locationAddress,
                           hargaTotal: hargaFix,
                           startDate: startdateNew,
                           endDate: enddateNew,
@@ -1308,49 +1436,11 @@ class _BookingPageState extends State<BookingPage> {
     );
   }
 
-  Future<void> _openMap(double lat, double long) async {
-    String googleURL =
-        'https://www.google.com/maps/search/?api=1&query=$lat,$long';
-    await canLaunchUrlString(googleURL)
-        ? await launchUrlString(googleURL)
-        : throw 'Could not launch $googleURL';
-  }
-
-  void wishlistTap() {
-    var user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Jika user belum login, tampilkan pesan
-      return; // Keluar dari metode fetchUserData
-    }
-    String user_id = user.uid;
-    String nama_penginapan = widget.locationName;
-    String hotel_id = widget.hotel_id;
-    String alamat = widget.locationAddress;
-    String url_foto = widget.url_foto;
-    WishlistModel wishlistModel = WishlistModel(
-        nama_penginapan: nama_penginapan,
-        hotel_id: hotel_id,
-        address: alamat,
-        uid: user_id,
-        url_foto: url_foto);
-    WishlistDatabaseHelper.insertWishlist(wishlistModel);
-  }
-
-  // void _launchMapUrl() async {
-  //   setState(() {
-  //     print('truee');
-  //     _isButtonPressed = true;
-  //   });
-  //   final urlString =
-  //       'https://www.google.com/maps/search/?api=1&query=${widget.latitude},${widget.longitude}';
-  //   final url = Uri.parse(urlString);
-  //   if (await canLaunchUrl(url)) {
-  //     await launchUrl(url);
-  //   } else {
-  //     print('ererere');
-  //   }
-  //   setState(() {
-  //     _isButtonPressed = false;
-  //   });
+  // Future<void> _openMap(double lat, double long) async {
+  //   String googleURL =
+  //       'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+  //   await canLaunchUrlString(googleURL)
+  //       ? await launchUrlString(googleURL)
+  //       : throw 'Could not launch $googleURL';
   // }
 }

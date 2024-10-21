@@ -177,39 +177,6 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       const SizedBox(height: 16),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, bottom: 12),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, WishlistScreen.routeName);
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset('assets/images/wishlist.png'),
-                              const SizedBox(width: 20),
-                              Text(
-                                'Wishlist',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                color: Colors.white10,
-                              )),
-                              const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.black45,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
                         padding: const EdgeInsets.only(
                             left: 8.0, top: 4, bottom: 12),
                         child: InkWell(
@@ -255,40 +222,6 @@ class _SettingPageState extends State<SettingPage> {
                               const SizedBox(width: 20),
                               Text(
                                 'Change to Business Account',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                color: Colors.white10,
-                              )),
-                              const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.black45,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, top: 4, bottom: 12),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, MessageScreen.routeName);
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset('assets/images/inbox.png'),
-                              const SizedBox(width: 20),
-                              Text(
-                                'Inbox',
                                 style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                   fontSize: 16,
