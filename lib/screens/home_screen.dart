@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/services/boat_service.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/book_btn.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    BoatService().fetchBoats(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkB0ZXMuY29tIiwiaWF0IjoxNzI5NTIzNzM4LCJleHAiOjE3Mjk1MjczMzh9.F2ONsJJ3lMP_sqVT8CyfC1fJK9KU5xYHPqOlhLnkqxk',
+        '2024-10-10T14:59:00.000Z');
+    print('test aa');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(

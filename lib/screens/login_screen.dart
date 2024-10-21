@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/auth_password_field.dart';
 import 'package:flutter_project/widgets/auth_texfield.dart';
@@ -132,9 +133,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_signInFormKey.currentState!.validate()) {
-                            _signIn();
+                            await AuthService().loginUser(_emailController.text,
+                                _passwordController.text);
                           }
                         },
                         style: ElevatedButton.styleFrom(

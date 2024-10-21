@@ -10,7 +10,7 @@ import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_project/models/user_model.dart';
-import 'package:flutter_project/services/http_service.dart';
+import 'package:flutter_project/services/auth_service.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -193,9 +193,14 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_signUpFormKey.currentState!.validate()) {
-                            _signUp();
+                            await AuthService().registerUser(
+                              _nameController.text,
+                              _lastnameController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -271,38 +276,7 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  final HttpService _httpService = HttpService();
-
-  Future _signUp() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    String firstName = _nameController.text;
-    String lastName = _lastnameController.text;
-
-    User? user = await _auth.signUpWithEmailAndPassword(
-        email, password, firstName, lastName);
-
-    if (user != null) {
-      UserModel newUser = UserModel(
-        uid: user.uid,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-      );
-
-      // Menggunakan HttpService untuk melakukan request pendaftaran
-      String response = await _httpService.registerUser(newUser);
-
-      if (response == "Success") {
-        Navigator.pushNamed(context, HomeScreen.routeName);
-        print("Successfully created");
-      } else {
-        print("Error: $response");
-      }
-    } else {
-      print('some error occured');
-    }
-  }
+  final AuthService _httpService = AuthService();
 
   //  FUNGSI SEBELUMNYA
   //
