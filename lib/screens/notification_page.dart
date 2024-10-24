@@ -100,7 +100,7 @@ class _NotificationPageState extends State<NotificationPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.fromLTRB(16, 10, 20, 16),
+            margin: const EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment
                   .spaceBetween, // Untuk mengatur jarak antara teks dan ikon

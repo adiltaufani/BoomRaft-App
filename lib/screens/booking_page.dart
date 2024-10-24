@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/futniture_widget.dart';
+import 'package:flutter_project/widgets/raft_type_btn.dart';
 import 'package:flutter_project/zzunused/message/screens/message_chat_screen.dart';
 import 'package:flutter_project/screens/payment_page.dart';
 import 'package:flutter_project/widgets/variables.dart';
@@ -63,6 +65,9 @@ class _BookingPageState extends State<BookingPage> {
   String tanggalAwal = '';
   String tanggalAkhir = '';
   bool docuCheckBox = false;
+  int smallRaftQuantity = 0;
+  int mediumRaftQuantity = 0;
+  int largeRaftQuantity = 0;
 
   late Future<Map<String, bool>> futureFurnitureData;
 
@@ -177,8 +182,9 @@ class _BookingPageState extends State<BookingPage> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 3,
                           child: ImageSlideshow(
-                            indicatorColor: const Color(0xFF0A8ED9),
-                            indicatorBackgroundColor: Colors.white60,
+                            indicatorColor: AppTheme.darkBlue,
+                            indicatorBackgroundColor:
+                                Colors.white.withOpacity(0.64),
                             autoPlayInterval: 5000,
                             indicatorRadius: 4,
                             isLoop: true,
@@ -194,15 +200,15 @@ class _BookingPageState extends State<BookingPage> {
                                 ),
                               ),
                               Image.asset(
-                                'assets/images/im2.jpeg',
+                                'assets/images/im2.jpg',
                                 fit: BoxFit.cover,
                               ),
                               Image.asset(
-                                'assets/images/im3.jpeg',
+                                'assets/images/im2.jpg',
                                 fit: BoxFit.cover,
                               ),
                               Image.asset(
-                                'assets/images/im3.jpeg',
+                                'assets/images/im2.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ],
@@ -256,53 +262,7 @@ class _BookingPageState extends State<BookingPage> {
                           ],
                         ),
                         const SizedBox(height: 5),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 25.0,
-                                    backgroundImage:
-                                        NetworkImage(widget.sellersFoto),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Hosted by',
-                                        style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        widget.sellersName,
-                                        style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(),
+
                         const SizedBox(
                           height: 8,
                         ),
@@ -576,28 +536,34 @@ class _BookingPageState extends State<BookingPage> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          width: double.maxFinite,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 3,
-                                offset: const Offset(1, 2),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              // Image.asset('name'),
-                            ],
-                          ),
+                        RaftingCard(
+                          boatType: 'Small Raft',
+                          price: 700000,
+                          onQuantityChanged: (int newQuantity) {
+                            setState(() {
+                              smallRaftQuantity = newQuantity;
+                            });
+                          },
                         ),
+                        RaftingCard(
+                          boatType: 'Medium Raft',
+                          price: 900000,
+                          onQuantityChanged: (int newQuantity) {
+                            setState(() {
+                              mediumRaftQuantity = newQuantity;
+                            });
+                          },
+                        ),
+                        RaftingCard(
+                          boatType: 'Large Raft',
+                          price: 1050000,
+                          onQuantityChanged: (int newQuantity) {
+                            setState(() {
+                              largeRaftQuantity = newQuantity;
+                            });
+                          },
+                        ),
+
                         ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
@@ -1052,7 +1018,7 @@ class _BookingPageState extends State<BookingPage> {
                                       ),
                                     ),
                                     Text(
-                                      ': X boat',
+                                      ': $smallRaftQuantity boat',
                                       style: GoogleFonts.montserrat(
                                         textStyle: const TextStyle(
                                           color: Colors.black54,
@@ -1080,7 +1046,7 @@ class _BookingPageState extends State<BookingPage> {
                                       ),
                                     ),
                                     Text(
-                                      ': X boat',
+                                      ': $mediumRaftQuantity boat',
                                       style: GoogleFonts.montserrat(
                                         textStyle: const TextStyle(
                                           color: Colors.black54,
@@ -1108,7 +1074,7 @@ class _BookingPageState extends State<BookingPage> {
                                       ),
                                     ),
                                     Text(
-                                      ': X boat',
+                                      ': $largeRaftQuantity boat',
                                       style: GoogleFonts.montserrat(
                                         textStyle: const TextStyle(
                                           color: Colors.black54,
@@ -1161,6 +1127,24 @@ class _BookingPageState extends State<BookingPage> {
                                           height: 50,
                                           child: TextField(
                                             textAlign: TextAlign.center,
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  2),
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            onChanged: (value) {
+                                              // Logika untuk memeriksa nilai input
+                                              if (value.isNotEmpty) {
+                                                int enteredValue =
+                                                    int.parse(value);
+                                                if (enteredValue > 15) {
+                                                  // Jika lebih dari 15, reset ke nilai 15
+                                                  value = '15';
+                                                }
+                                              }
+                                            },
                                             decoration: InputDecoration(
                                               hintText: '0',
                                               hintStyle: GoogleFonts.montserrat(

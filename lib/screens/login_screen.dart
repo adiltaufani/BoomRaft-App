@@ -162,10 +162,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Row(
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           "Don't have an accont?",
                           style: GoogleFonts.outfit(
                             textStyle: TextStyle(
-                              color: const Color(0xFF3FA2F6).withOpacity(0.5),
+                              color: const Color(0xFF3FA2F6).withOpacity(0.6),
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),

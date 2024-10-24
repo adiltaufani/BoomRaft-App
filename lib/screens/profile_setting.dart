@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_project/services/fetch_data_service.dart';
 import 'package:flutter_project/services/firebase_auth_service.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:http/http.dart' as http;
@@ -23,27 +24,22 @@ class _ProfileSettingState extends State<ProfileSetting> {
   TextEditingController _birthdate = TextEditingController();
   TextEditingController _address = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String? _firstname;
-  String? lastname;
+  String firstname = '';
+  String lastname = '';
+  String email = '';
+  String pp = '';
   String? number;
   String? birthdate;
   String? address;
-  String? email;
   bool firstnameTrigger = false;
-  String pp = '';
   bool isDataAvail = false;
   String uid = '';
   String id = '';
 
   @override
   void initState() {
-    fetchData();
+    FetchDataService().fetchUserData(firstname, lastname, email, pp);
     super.initState();
-  }
-
-  Future<void> fetchData() async {
-    await fetchUserData();
-    setState(() {});
   }
 
   @override
@@ -140,7 +136,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _firstname ?? 'Loading...',
+                                        firstname ?? 'Loading...',
                                         style: GoogleFonts.montserrat(
                                           fontSize: 24,
                                           color: Colors.white,
@@ -329,7 +325,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
     var data = json.decode(response.body);
     if (data != null) {
       // Data berhasil diterima, tampilkan firstname dan lastname
-      _firstname = data['firstname'];
+      firstname = data['firstname'];
       lastname = data['lastname'];
       number = data['number'];
       birthdate = data['birthdate'];
@@ -338,7 +334,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
       id = data['id'];
       pp = await getImageUrl('images/image_$uid.jpg');
 
-      _name.text = _firstname!;
+      _name.text = firstname!;
       _number.text = number!;
       _birthdate.text = birthdate!;
       _address.text = address!;
@@ -351,7 +347,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
       throw ("Gagal mendapatkan data penggunasdasda");
     }
 
-    if (_firstname != null) {
+    if (firstname != null) {
       firstnameTrigger = true;
     }
   }

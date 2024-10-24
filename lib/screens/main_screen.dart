@@ -1,25 +1,15 @@
-import 'dart:convert';
 import 'package:flutter_project/screens/home_screen.dart';
-import 'package:flutter_project/screens/main_screen.dart';
+import 'package:flutter_project/services/fetch_data_service.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/variables.dart';
-import 'package:flutter_project/widgets/book_btn.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter_project/appbar_global.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/screens/notification_page.dart';
-import 'package:flutter_project/screens/setting_page.dart';
 import 'package:flutter_project/widgets/side_menu.dart';
-import 'package:flutter_project/zzunused/home_bar.dart';
-import 'package:flutter_project/zzunused/search/widgets/search_page_widget.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:shimmer/shimmer.dart';
 
 class MainScreen extends StatefulWidget {
   static const String routeName = '/main-screen';
@@ -53,7 +43,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    fetchUserData();
+    FetchDataService().fetchUserData(firstname, lastname, email, pp);
     runPHPCodeOnMainScreen();
 
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
@@ -157,40 +147,40 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return formatter.format(number);
   }
 
-  Future<void> fetchUserData() async {
-    var user = FirebaseAuth.instance.currentUser;
+  // Future<void> fetchUserData() async {
+  //   var user = FirebaseAuth.instance.currentUser;
 
-    // Pastikan user sudah login
-    if (user == null) {
-      // Jika user belum login, tampilkan pesan
-      print("Silakan login terlebih dahulu");
-      return; // Keluar dari metode fetchUserData
-    }
+  //   // Pastikan user sudah login
+  //   if (user == null) {
+  //     // Jika user belum login, tampilkan pesan
+  //     print("Silakan login terlebih dahulu");
+  //     return; // Keluar dari metode fetchUserData
+  //   }
 
-    var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/view_data.php");
-    String uid = user.uid;
-    var response = await http.post(url, body: {
-      "uid": uid,
-    });
+  //   var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/view_data.php");
+  //   String uid = user.uid;
+  //   var response = await http.post(url, body: {
+  //     "uid": uid,
+  //   });
 
-    var data = json.decode(response.body);
-    if (data != null) {
-      // Data berhasil diterima, tampilkan firstname dan lastname
-      firstname = data['firstname'];
-      lastname = data['lastname'];
-      email = data['email'];
-      String cleanedUrlFoto = data['profile_picture'].replaceAll('\\', '');
-      pp = cleanedUrlFoto;
-      print('Firstname: $firstname, Lastname: $lastname');
-      // Lakukan apapun yang Anda ingin lakukan dengan data ini
-      setState(() {
-        isDataAvail = false;
-        print(pp);
-      });
-    } else {
-      print("Gagal mendapatkan data pengguna");
-    }
-  }
+  //   var data = json.decode(response.body);
+  //   if (data != null) {
+  //     // Data berhasil diterima, tampilkan firstname dan lastname
+  //     firstname = data['firstname'];
+  //     lastname = data['lastname'];
+  //     email = data['email'];
+  //     String cleanedUrlFoto = data['profile_picture'].replaceAll('\\', '');
+  //     pp = cleanedUrlFoto;
+  //     print('Firstname: $firstname, Lastname: $lastname');
+  //     // Lakukan apapun yang Anda ingin lakukan dengan data ini
+  //     setState(() {
+  //       isDataAvail = false;
+  //       print(pp);
+  //     });
+  //   } else {
+  //     print("Gagal mendapatkan data pengguna");
+  //   }
+  // }
 
   Future<void> runPHPCodeOnMainScreen() async {
     final url =

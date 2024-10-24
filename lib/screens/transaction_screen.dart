@@ -83,7 +83,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: const EdgeInsets.fromLTRB(16, 10, 20, 16),
+                  margin: const EdgeInsets.all(20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/widgets/logout_dialog.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:http/http.dart' as http;
@@ -68,8 +69,7 @@ class _SettingPageState extends State<SettingPage> {
               children: [
                 Container(
                   height: 180,
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 197, 227, 219)),
+                  decoration: const BoxDecoration(color: Color(0xFFFFF492)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,17 +98,22 @@ class _SettingPageState extends State<SettingPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       child: AspectRatio(
-                                          aspectRatio:
-                                              1.0, // Mengatur aspect ratio menjadi 1:1 (persegi)
-                                          child: isDataAvail
-                                              ? CircleAvatar(
-                                                  radius: 26,
-                                                  backgroundColor:
-                                                      Colors.white30,
-                                                  backgroundImage:
-                                                      NetworkImage(pp),
-                                                )
-                                              : CircularProgressIndicator()),
+                                        aspectRatio:
+                                            1.0, // Mengatur aspect ratio menjadi 1:1 (persegi)
+                                        child: isDataAvail
+                                            ? CircleAvatar(
+                                                radius: 26,
+                                                backgroundColor: Colors.white30,
+                                                backgroundImage:
+                                                    NetworkImage(pp),
+                                              )
+                                            : CircleAvatar(
+                                                radius: 26,
+                                                backgroundColor: Colors.white30,
+                                                backgroundImage: AssetImage(
+                                                    'assets/images/profile.png')),
+                                        // CircularProgressIndicator(),
+                                      ),
                                     ),
                                     Padding(
                                       padding:
@@ -122,18 +127,18 @@ class _SettingPageState extends State<SettingPage> {
                                           Text(
                                             '${firstname ?? 'Loading...'}',
                                             style: GoogleFonts.montserrat(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                               fontSize: 24,
-                                              color: Color(0xFF50B498),
+                                              color: AppTheme.darkBlue,
                                               fontWeight: FontWeight.w800,
                                             )),
                                           ),
                                           Text(
                                             '${email ?? 'Loading...'}',
                                             style: GoogleFonts.montserrat(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                               fontSize: 14,
-                                              color: Color(0xFF50B498),
+                                              color: AppTheme.darkBlue,
                                               fontWeight: FontWeight.w600,
                                             )),
                                           ),
@@ -143,9 +148,9 @@ class _SettingPageState extends State<SettingPage> {
                                     const SizedBox(
                                       width: 32,
                                     ),
-                                    Icon(
+                                    const Icon(
                                       Icons.arrow_forward_ios_rounded,
-                                      color: Color(0xFF50B498),
+                                      color: AppTheme.backgroundColor,
                                     ),
                                   ],
                                 ),
