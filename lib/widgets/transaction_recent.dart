@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/models/reserv_model.dart';
 import 'package:flutter_project/screens/reschedule_page.dart';
+import 'package:flutter_project/services/transaction_service.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -22,68 +24,38 @@ class _TransactionRecentState extends State<TransactionRecent> {
   List<bool> booleanList = List<bool>.filled(10, false);
   List<bool> isUp = List<bool>.filled(10, false);
   List<bool> isConstScrolled = List<bool>.filled(10, false);
+  late Future<List<Reservation>> reservation;
+  List<Reservation> reservationData = [];
 
   @override
   void initState() {
-    fetchUserData();
+    reservation = TransactionService().getReservation();
     super.initState();
-  }
-
-  Future _getdata() async {
-    print(' ini user id ${user_id}');
-    try {
-      final response = await http.get(
-        Uri.parse(
-            '${ipaddr}/ta_projek/crudtaprojek/transaction_recent.php?user_id=$user_id'),
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        await Future.delayed(Duration(seconds: 2));
-        setState(() {
-          _Listdata = data;
-          isLoading = false;
-          print(_Listdata);
-        });
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> fetchUserData() async {
-    var user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      print("Silakan login terlebih dahulu");
-      return;
-    }
-
-    var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/view_data.php");
-    String uid = user.uid;
-
-    var response = await http.post(url, body: {
-      "uid": uid,
-    });
-
-    var data = json.decode(response.body);
-    if (data != null) {
-      user_id = data['id'];
-      _getdata();
-    } else {
-      print("Gagal mendapatkan data pengguna");
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? buildShimmer() : buildListView();
+    return FutureBuilder<List<Reservation>>(
+        future: reservation,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return buildShimmer();
+          } else if (snapshot.hasError) {
+            print(snapshot);
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            reservationData = snapshot.data!;
+            print('ni tes index${reservationData[0]}');
+          }
+          return buildListView();
+        });
   }
 
   Widget buildShimmer() {
     return SizedBox(
       height: 400,
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: 1,
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
@@ -134,13 +106,14 @@ class _TransactionRecentState extends State<TransactionRecent> {
   }
 
   Widget buildListView() {
+    print('ini dt listview ${reservationData.length}');
     return ListView.builder(
-      itemCount: _Listdata.length,
+      itemCount: reservationData.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        String cleanedUrlFoto =
-            _Listdata[index]['url_foto'].replaceAll('\\', '');
+        // String cleanedUrlFoto =
+        //     _Listdata[index]['url_foto'].replaceAll('\\', '');
         return Container(
           width: double.infinity,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -182,9 +155,9 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                     const EdgeInsets.fromLTRB(12, 12, 2, 10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                      image: NetworkImage(cleanedUrlFoto),
-                                      fit: BoxFit.cover),
+                                  // image: DecorationImage(
+                                  //     image: NetworkImage(cleanedUrlFoto),
+                                  //     fit: BoxFit.cover),
                                 ),
                               ),
                               Container(
@@ -210,8 +183,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                               constraints: const BoxConstraints(
                                                   maxWidth: 196),
                                               child: Text(
-                                                _Listdata[index]
-                                                    ['nama_penginapan'],
+                                                'blabla',
                                                 style: GoogleFonts.montserrat(
                                                   textStyle: const TextStyle(
                                                     color: Colors.black,
@@ -242,10 +214,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                                                       .start,
                                                               children: [
                                                                 Text(
-                                                                  _Listdata[
-                                                                          index]
-                                                                      [
-                                                                      'alamat'],
+                                                                  'sadasd',
                                                                   style: GoogleFonts
                                                                       .montserrat(
                                                                     textStyle:
@@ -263,7 +232,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  "${_Listdata[index]['tanggal_checkin']} - ${_Listdata[index]['tanggal_checkout']}\n", //Deluxe Room
+                                                                  "${reservationData[0].rsvDatetime} - ${reservationData[0].rsvDatetimeEnd}\n", //Deluxe Room
                                                                   style: GoogleFonts
                                                                       .montserrat(
                                                                     textStyle:
@@ -281,10 +250,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  _Listdata[
-                                                                          index]
-                                                                      [
-                                                                      'tipe_kamar'],
+                                                                  'asdas',
                                                                   style: GoogleFonts
                                                                       .montserrat(
                                                                     textStyle:
@@ -374,7 +340,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                                                   height: 8,
                                                                 ),
                                                                 Text(
-                                                                  "${_Listdata[index]['tanggal_checkin']} - ${_Listdata[index]['tanggal_checkout']}",
+                                                                  "${reservationData[0].rsvDatetime} - ${reservationData[0].rsvDatetimeEnd}",
                                                                   style: GoogleFonts
                                                                       .montserrat(
                                                                     textStyle:
@@ -392,10 +358,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  _Listdata[
-                                                                          index]
-                                                                      [
-                                                                      'tipe_kamar'],
+                                                                  'asdasd',
                                                                   style: GoogleFonts
                                                                       .montserrat(
                                                                     textStyle:
@@ -471,7 +434,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                   ),
                                 ),
                                 Text(
-                                  'Rp. ${_Listdata[index]['harga']}',
+                                  'Rp. ${reservationData[0].status}',
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                       color: Color(0xFF225B7B),

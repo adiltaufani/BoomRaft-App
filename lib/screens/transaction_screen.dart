@@ -121,7 +121,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           ),
                         ),
                       ),
-                      TransactionOngoing(),
+                      // TransactionOngoing(),
                       Text(
                         'Recent',
                         style: GoogleFonts.raleway(

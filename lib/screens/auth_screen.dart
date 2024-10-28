@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/widgets/auth_password_field.dart';
 import 'package:flutter_project/widgets/auth_texfield.dart';
 import 'package:flutter_project/screens/login_screen.dart';
@@ -201,6 +202,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               _emailController.text,
                               _passwordController.text,
                             );
+                            Navigator.pushNamed(context, MainScreen.routeName);
                           }
                         },
                         style: ElevatedButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   String apiUrl = dotenv.env['API_URL'] ?? 'Default URL';
@@ -40,9 +41,8 @@ class AuthService {
       'email': email,
       'password': password,
     };
+
     try {
-      print('test');
-      print('$url testst');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -52,12 +52,21 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        print('Signup successful: ${jsonDecode(response.body)}');
+        final responseData = jsonDecode(response.body);
+
+        // Ambil token dari response
+        final token = responseData['token'];
+
+        // Simpan token di SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('authToken', token);
+
+        print('Login successful, token saved: $token');
       } else {
-        throw Exception('Failed to sign up');
+        throw Exception('Failed to log in');
       }
     } catch (e) {
-      throw Exception('Error signing up: $e');
+      throw Exception('Error logging in: $e');
     }
   }
 }

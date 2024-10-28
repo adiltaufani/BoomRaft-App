@@ -1,23 +1,17 @@
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_project/themes/theme.dart';
-import 'package:flutter_project/widgets/futniture_widget.dart';
 import 'package:flutter_project/widgets/raft_type_btn.dart';
-import 'package:flutter_project/zzunused/message/screens/message_chat_screen.dart';
 import 'package:flutter_project/screens/payment_page.dart';
 import 'package:flutter_project/widgets/variables.dart';
-import 'package:flutter_project/zzunused/wishlist/database/db_helper.dart';
-import 'package:flutter_project/zzunused/wishlist/model/wishlist_model.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher_string.dart';
 
 // ignore: must_be_immutable
 class BookingPage extends StatefulWidget {
@@ -68,6 +62,7 @@ class _BookingPageState extends State<BookingPage> {
   int smallRaftQuantity = 0;
   int mediumRaftQuantity = 0;
   int largeRaftQuantity = 0;
+  int maxParticipant = 0;
 
   late Future<Map<String, bool>> futureFurnitureData;
 
@@ -141,11 +136,13 @@ class _BookingPageState extends State<BookingPage> {
   int _selectedValueChild = 0;
   List<String> selectedRoomIds = [];
   String roomsIds = '';
+  final TextEditingController _maxParController = TextEditingController();
 
   @override
   void initState() {
     fetchData();
     print('hotel id ==== ${widget.hotel_id}');
+    _maxParController.text = '0';
     super.initState();
   }
 
@@ -156,6 +153,28 @@ class _BookingPageState extends State<BookingPage> {
     DateTime date2 = DateTime.parse(formattedEndDate);
     startdateNew = DateFormat('dd MMMM yyyy').format(date);
     enddateNew = DateFormat('dd MMMM yyyy').format(date2);
+  }
+
+  void _updateMaxParticipant(int newMaxParticipant) {
+    setState(() {
+      maxParticipant = (smallRaftQuantity * 4) +
+          (mediumRaftQuantity * 5) +
+          (largeRaftQuantity * 6);
+    });
+    int getMaxParticipant() {
+      try {
+        // Mengonversi teks di dalam controller menjadi int
+        return int.parse(_maxParController.text);
+      } catch (e) {
+        // Jika konversi gagal, misalnya teks kosong atau tidak valid, kembalikan nilai default
+        return 0; // Atur nilai default yang diinginkan
+      }
+    }
+
+    if (getMaxParticipant() >= maxParticipant) {
+      _maxParController.text =
+          maxParticipant.toString(); // Update the TextField to display 15
+    }
   }
 
   @override
@@ -544,6 +563,7 @@ class _BookingPageState extends State<BookingPage> {
                               smallRaftQuantity = newQuantity;
                             });
                           },
+                          onMaxParticipantChanged: _updateMaxParticipant,
                         ),
                         RaftingCard(
                           boatType: 'Medium Raft',
@@ -553,6 +573,7 @@ class _BookingPageState extends State<BookingPage> {
                               mediumRaftQuantity = newQuantity;
                             });
                           },
+                          onMaxParticipantChanged: _updateMaxParticipant,
                         ),
                         RaftingCard(
                           boatType: 'Large Raft',
@@ -562,6 +583,7 @@ class _BookingPageState extends State<BookingPage> {
                               largeRaftQuantity = newQuantity;
                             });
                           },
+                          onMaxParticipantChanged: _updateMaxParticipant,
                         ),
 
                         ListView.builder(
@@ -1126,6 +1148,7 @@ class _BookingPageState extends State<BookingPage> {
                                           width: 60,
                                           height: 50,
                                           child: TextField(
+                                            controller: _maxParController,
                                             textAlign: TextAlign.center,
                                             keyboardType: TextInputType.number,
                                             inputFormatters: [
@@ -1139,9 +1162,15 @@ class _BookingPageState extends State<BookingPage> {
                                               if (value.isNotEmpty) {
                                                 int enteredValue =
                                                     int.parse(value);
-                                                if (enteredValue > 15) {
-                                                  // Jika lebih dari 15, reset ke nilai 15
-                                                  value = '15';
+                                                if (enteredValue >
+                                                    maxParticipant) {
+                                                  _maxParController.text =
+                                                      maxParticipant
+                                                          .toString(); // Update the TextField to display 15
+                                                } else {
+                                                  _maxParController.text =
+                                                      enteredValue
+                                                          .toString(); // Update with valid value
                                                 }
                                               }
                                             },
@@ -1154,11 +1183,11 @@ class _BookingPageState extends State<BookingPage> {
                                                   fontWeight: FontWeight.w400,
                                                 ),
                                               ),
-                                              border:
+                                              enabledBorder:
                                                   const UnderlineInputBorder(
                                                 borderSide: BorderSide(
-                                                    color: Colors.black54,
-                                                    width: 2),
+                                                    color: AppTheme.darkBlue,
+                                                    width: 1),
                                               ),
                                               focusedBorder:
                                                   const UnderlineInputBorder(
@@ -1183,7 +1212,7 @@ class _BookingPageState extends State<BookingPage> {
                                           ),
                                         ),
                                         Text(
-                                          'Max Participant: X',
+                                          'Max Participant: $maxParticipant',
                                           style: GoogleFonts.montserrat(
                                             textStyle: const TextStyle(
                                               color: Colors.black54,

@@ -7,6 +7,9 @@ class Reservation {
   final int numberOfPeople;
   final String paymentMethod;
   final bool paid;
+  final String status;
+  final Boat boat;
+  final List<Review> review;
 
   Reservation({
     required this.rsvId,
@@ -17,9 +20,12 @@ class Reservation {
     required this.numberOfPeople,
     required this.paymentMethod,
     required this.paid,
+    required this.status,
+    required this.boat,
+    required this.review,
   });
 
-  // Fungsi untuk mengubah JSON menjadi objek Reservation
+  // Method untuk mengonversi dari JSON ke objek Reservation
   factory Reservation.fromJson(Map<String, dynamic> json) {
     return Reservation(
       rsvId: json['rsv_id'],
@@ -30,10 +36,15 @@ class Reservation {
       numberOfPeople: json['number_of_people'],
       paymentMethod: json['payment_method'],
       paid: json['paid'],
+      status: json['status'],
+      boat: Boat.fromJson(json['boat']),
+      review: (json['review'] as List<dynamic>)
+          .map((item) => Review.fromJson(item))
+          .toList(),
     );
   }
 
-  // Fungsi untuk mengubah objek Reservation menjadi JSON
+  // Method untuk mengonversi dari objek Reservation ke JSON
   Map<String, dynamic> toJson() {
     return {
       'rsv_id': rsvId,
@@ -44,6 +55,66 @@ class Reservation {
       'number_of_people': numberOfPeople,
       'payment_method': paymentMethod,
       'paid': paid,
+      'status': status,
+      'boat': boat.toJson(),
+      'review': review.map((item) => item.toJson()).toList(),
+    };
+  }
+}
+
+// Model untuk Boat
+class Boat {
+  final int boatId;
+  final String boatName;
+  final int capacity;
+  final double price;
+
+  Boat({
+    required this.boatId,
+    required this.boatName,
+    required this.capacity,
+    required this.price,
+  });
+
+  factory Boat.fromJson(Map<String, dynamic> json) {
+    return Boat(
+      boatId: json['boat_id'],
+      boatName: json['boat_name'],
+      capacity: json['capacity'],
+      price: json['price'].toDouble(), // Mengonversi ke double
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'boat_id': boatId,
+      'boat_name': boatName,
+      'capacity': capacity,
+      'price': price,
+    };
+  }
+}
+
+// Model untuk Review
+class Review {
+  // Tambahkan properti sesuai kebutuhan
+  // Contoh:
+  final String comment;
+
+  Review({
+    required this.comment,
+  });
+
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(
+      comment: json['comment'] ??
+          '', // Sesuaikan dengan struktur review yang sebenarnya
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'comment': comment,
     };
   }
 }

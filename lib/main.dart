@@ -4,16 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
-import 'package:flutter_project/screens/auth_screen.dart';
-import 'package:flutter_project/screens/booking_page.dart';
-import 'package:flutter_project/screens/contactus_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
-import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/screens/main_screen.dart';
-import 'package:flutter_project/screens/otp_screen.dart';
-import 'package:flutter_project/zzunused/chatAI/widgets/consts.dart';
-import 'package:flutter_project/zzunused/message/screens/message_screen.dart';
-import 'package:flutter_project/screens/profile_setting.dart';
 import 'package:flutter_project/firebase_options.dart';
 import 'package:flutter_project/routes/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
@@ -68,8 +60,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             onGenerateRoute: (settings) => generateRoute(settings),
             home: snapshot.data == null
-                ? MainScreen()
-                : LoginScreen(), // Redirect to appropriate screen based on auth state
+                ? LoginScreen()
+                : MainScreen(), // Redirect to appropriate screen based on auth state
           );
         }
       },

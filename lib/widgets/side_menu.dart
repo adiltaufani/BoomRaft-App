@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/contactus_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
+import 'package:flutter_project/services/user_services.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/screens/notification_page.dart';
@@ -35,15 +37,31 @@ class _SideMenuState extends State<SideMenu> {
   String email = '';
   String pp = '';
   bool isDataAvail = false;
-
+  Future<Map<String, dynamic>>? userProfile;
+  Map<String, dynamic> userData = {};
   @override
   void initState() {
-    fetchUserData();
+    userProfile = UserServices().getProfile();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: userProfile,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return buildDrawer(context);
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            userData = snapshot.data!;
+          }
+          return buildDrawer(context);
+        });
+  }
+
+  Widget buildDrawer(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.white,
       child: SafeArea(
@@ -103,7 +121,7 @@ class _SideMenuState extends State<SideMenu> {
                                 AssetImage('assets/images/profile.png'),
                           ),
                           title: Text(
-                            'Username',
+                            '${userData['name'] ?? "Loading"} ',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                 color: AppTheme.darkYellow,
@@ -114,7 +132,7 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           ),
                           subtitle: Text(
-                            'Email',
+                            '${userData['email'] ?? "Loading"}',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                 color: AppTheme.darkYellow,
@@ -262,35 +280,6 @@ class _SideMenuState extends State<SideMenu> {
         ],
       ),
     );
-  }
-
-  Future<void> fetchUserData() async {
-    var user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      print("Silakan login terlebih dahulu");
-      return;
-    }
-
-    var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/view_data.php");
-    String uid = user.uid;
-    var response = await http.post(url, body: {
-      "uid": uid,
-    });
-
-    var data = json.decode(response.body);
-    if (data != null) {
-      firstname = data['firstname'];
-      lastname = data['lastname'];
-      email = data['email'];
-      String cleanedUrlFoto = data['profile_picture'].replaceAll('\\', '');
-      pp = await getImageUrl('images/image_$uid.jpg');
-      setState(() {
-        isDataAvail = true;
-      });
-    } else {
-      print("Gagal mendapatkan data pengguna");
-    }
   }
 
   Future<String> getImageUrl(String imagePath) async {

@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
+import 'package:flutter_project/services/user_services.dart';
 import 'package:flutter_project/themes/theme.dart';
+import 'package:flutter_project/widgets/loading.dart';
 import 'package:flutter_project/widgets/logout_dialog.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project/zzunused/message/screens/message_screen.dart';
 import 'package:flutter_project/screens/profile_setting.dart';
 import 'package:flutter_project/screens/transaction_screen.dart';
 import 'package:flutter_project/zzunused/wishlist/screens/wishlist_screen.dart';
@@ -28,10 +29,13 @@ class _SettingPageState extends State<SettingPage> {
   String? email;
   String pp = '';
   bool isDataAvail = false;
+  Future<Map<String, dynamic>>? userProfile;
+  Map<String, dynamic> userData = {};
   final GoogleAuthService authService = GoogleAuthService();
 
   @override
   void initState() {
+    userProfile = UserServices().getProfile();
     fetchData();
     super.initState();
   }
@@ -43,6 +47,21 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: userProfile,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: buildScreen(context));
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            userData = snapshot.data!;
+          }
+          return buildScreen(context);
+        });
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -125,7 +144,7 @@ class _SettingPageState extends State<SettingPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '${firstname ?? 'Loading...'}',
+                                            '${userData['name'] ?? 'loading'}',
                                             style: GoogleFonts.montserrat(
                                                 textStyle: const TextStyle(
                                               fontSize: 24,
@@ -134,7 +153,7 @@ class _SettingPageState extends State<SettingPage> {
                                             )),
                                           ),
                                           Text(
-                                            '${email ?? 'Loading...'}',
+                                            '${userData['email'] ?? 'loading'}',
                                             style: GoogleFonts.montserrat(
                                                 textStyle: const TextStyle(
                                               fontSize: 14,

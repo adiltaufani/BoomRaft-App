@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/auth_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/screens/main_screen.dart';
-import 'package:flutter_project/zzunused/message/screens/message_chat_screen.dart';
 import 'package:flutter_project/screens/booking_page.dart';
-import 'package:flutter_project/zzunused/chatAI/screens/aichat_page.dart';
 import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/zzunused/nearfromyou/screens/near_from_you.dart';
-import 'package:flutter_project/zzunused/message/screens/message_screen.dart';
 import 'package:flutter_project/screens/notification_page.dart';
 import 'package:flutter_project/screens/payment_success.dart';
 import 'package:flutter_project/screens/payment_page.dart';
@@ -16,9 +13,6 @@ import 'package:flutter_project/screens/payment_gateway_screen.dart';
 import 'package:flutter_project/screens/profile_setting.dart';
 import 'package:flutter_project/screens/setting_page.dart';
 import 'package:flutter_project/screens/reschedule_page.dart';
-import 'package:flutter_project/zzunused/search/screens/search_page.dart';
-import 'package:flutter_project/zzunused/search/widgets/search_page_widget.dart';
-import 'package:flutter_project/zzunused/wishlist/screens/wishlist_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -83,11 +77,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     //     settings: routeSettings,
     //     builder: (_) => LandmarkResult(),
     //   );
-    case AIChatPage.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => AIChatPage(),
-      );
+
     case PaymentUi.routeName:
       return MaterialPageRoute(
         settings: routeSettings,

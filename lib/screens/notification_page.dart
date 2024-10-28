@@ -123,7 +123,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   ],
                 ),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete,
                     color: Colors.red,
                     size: 28,
@@ -133,23 +133,24 @@ class _NotificationPageState extends State<NotificationPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Konfirmasi Delete"),
-                          content: Text(
+                          title: const Text("Konfirmasi Delete"),
+                          content: const Text(
                               "Apakah kamu yakin ingin menghapus semua notifikasi?"),
                           actions: <Widget>[
                             TextButton(
-                              child: Text("Yes"),
+                              child: const Text("Yes"),
                               onPressed: () async {
                                 await NotificationDatabaseHelper
                                     .deleteAllNotifications();
                                 setState(() {
                                   _isDataAvail = false;
                                 });
+                                // ignore: use_build_context_synchronously
                                 Navigator.of(context).pop();
                               },
                             ),
                             TextButton(
-                              child: Text("No"),
+                              child: const Text("No"),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -166,7 +167,7 @@ class _NotificationPageState extends State<NotificationPage> {
           isLoading
               ? Expanded(
                   child: ListView.builder(
-                    itemCount: 6, // Jumlah item shimmer
+                    itemCount: 3, // Jumlah item shimmer
                     itemBuilder: (BuildContext context, int index) {
                       return Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,

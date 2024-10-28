@@ -8,11 +8,13 @@ class RaftingCard extends StatefulWidget {
   final int price;
   final String boatType;
   final Function(int) onQuantityChanged;
+  final Function(int) onMaxParticipantChanged;
 
   RaftingCard(
       {required this.price,
       required this.boatType,
-      required this.onQuantityChanged});
+      required this.onQuantityChanged,
+      required this.onMaxParticipantChanged});
 
   @override
   _RaftingCardState createState() => _RaftingCardState();
@@ -20,11 +22,15 @@ class RaftingCard extends StatefulWidget {
 
 class _RaftingCardState extends State<RaftingCard> {
   int quantity = 0;
+  int maxParticipant = 0; // Nilai maksimum partisipan
 
   void _incrementQuantity() {
     setState(() {
-      quantity++;
-      widget.onQuantityChanged(quantity);
+      if (quantity >= 0) {
+        quantity++;
+        widget.onQuantityChanged(quantity);
+        widget.onMaxParticipantChanged(maxParticipant);
+      }
     });
   }
 
@@ -33,6 +39,7 @@ class _RaftingCardState extends State<RaftingCard> {
       if (quantity >= 1) {
         quantity--;
         widget.onQuantityChanged(quantity);
+        widget.onMaxParticipantChanged(maxParticipant);
       }
     });
   }
