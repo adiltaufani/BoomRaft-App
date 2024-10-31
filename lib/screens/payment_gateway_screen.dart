@@ -116,17 +116,17 @@ class _PaymentUiState extends State<PaymentUi> {
 
     final result = await TokenService().getToken();
 
-    if (result.isRight()) {
-      String? token = result.fold((l) => null, (r) => r.token);
+    // if (result.isRight()) {
+    //   String? token = result.fold((l) => null, (r) => r.token);
 
-      if (token != null) {
-        _midtrans?.startPaymentUiFlow(
-          token: token,
-        );
-      }
-    } else {
-      _showSnackBar('Transaction Failed', true);
-    }
+    //   if (token != null) {
+    //     _midtrans?.startPaymentUiFlow(
+    //       token: token,
+    //     );
+    //   }
+    // } else {
+    //   _showSnackBar('Transaction Failed', true);
+    // }
   }
 
   @override

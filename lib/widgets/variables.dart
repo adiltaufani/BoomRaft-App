@@ -1,2 +1,2 @@
-double harga = 0;
+int harga = 0;
 String id = '';

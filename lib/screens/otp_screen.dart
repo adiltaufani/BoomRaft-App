@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_project/screens/main_screen.dart';
+import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_project/themes/theme.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/number_symbols_data.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatefulWidget {
+  static const String routeName = '/otp-screen';
   const OtpScreen({super.key});
 
   @override
@@ -13,8 +17,21 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  final List<TextEditingController> _controllers =
-      List.generate(4, (index) => TextEditingController());
+  late final GlobalKey<FormState> formKey;
+  late final TextEditingController otpController;
+
+  @override
+  void initState() {
+    super.initState();
+    formKey = GlobalKey<FormState>();
+    otpController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    otpController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,27 +73,31 @@ class _OtpScreenState extends State<OtpScreen> {
           const SizedBox(
             height: 4,
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0),
-              child: Pinput(
-                length: 4,
-                defaultPinTheme: PinTheme(
-                  width: 76,
-                  height: 76,
-                  textStyle: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                      color: AppTheme.darkBlue,
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
+          Form(
+            key: formKey,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40.0),
+                child: Pinput(
+                  controller: otpController,
+                  length: 4,
+                  defaultPinTheme: PinTheme(
+                    width: 76,
+                    height: 76,
+                    textStyle: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                        color: AppTheme.darkBlue,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF96C9F4).withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color:
-                          AppTheme.darkBlue.withOpacity(0.6), // Sesuaikan warna
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF96C9F4).withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: AppTheme.darkBlue
+                            .withOpacity(0.6), // Sesuaikan warna
+                      ),
                     ),
                   ),
                 ),
@@ -89,11 +110,16 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                // if (_signInFormKey.currentState!.validate()) {
-                //   await AuthService().loginUser(_emailController.text,
-                //       _passwordController.text);
-                // }
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  final validate =
+                      await AuthService().validateOtp(otpController.text);
+                  if (validate) {
+                    Navigator.pushNamed(context, MainScreen.routeName);
+                  }
+
+                  // await AuthService().validateOtp(userid, otpController.text);
+                }
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

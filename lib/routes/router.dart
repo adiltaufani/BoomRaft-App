@@ -4,6 +4,7 @@ import 'package:flutter_project/screens/login_screen.dart';
 import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/screens/booking_page.dart';
 import 'package:flutter_project/screens/home_screen.dart';
+import 'package:flutter_project/screens/otp_screen.dart';
 import 'package:flutter_project/zzunused/nearfromyou/screens/near_from_you.dart';
 import 'package:flutter_project/screens/notification_page.dart';
 import 'package:flutter_project/screens/payment_success.dart';
@@ -13,6 +14,8 @@ import 'package:flutter_project/screens/payment_gateway_screen.dart';
 import 'package:flutter_project/screens/profile_setting.dart';
 import 'package:flutter_project/screens/setting_page.dart';
 import 'package:flutter_project/screens/reschedule_page.dart';
+
+Widget? currentScreen;
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -117,6 +120,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const SettingPage(),
+      );
+    case OtpScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const OtpScreen(),
       );
     case ProfileSetting.routeName:
       return MaterialPageRoute(

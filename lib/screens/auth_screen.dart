@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/routes/router.dart';
 import 'package:flutter_project/screens/main_screen.dart';
+import 'package:flutter_project/screens/otp_screen.dart';
 import 'package:flutter_project/widgets/auth_password_field.dart';
 import 'package:flutter_project/widgets/auth_texfield.dart';
 import 'package:flutter_project/screens/login_screen.dart';
@@ -50,9 +52,10 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    FirebaseAuth.instance.authStateChanges();
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AuthService().validateOtp('123');
   }
 
   @override
@@ -202,7 +205,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               _emailController.text,
                               _passwordController.text,
                             );
-                            Navigator.pushNamed(context, MainScreen.routeName);
+                            Navigator.pushNamed(context, OtpScreen.routeName);
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -277,57 +280,4 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
   }
-
-  final AuthService _httpService = AuthService();
-
-  //  FUNGSI SEBELUMNYA
-  //
-  // Future<void> register() async {
-  //   var url = Uri.parse("${ipaddr}/ta_projek/crudtaprojek/register.php");
-  //   String firstName = _nameController.text;
-  //   String lastName = _lastnameController.text;
-  //   String email = _emailController.text;
-
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   String uid = user!.uid;
-
-  //   final response = await http.post(
-  //     Uri.parse('${ipaddr}/ta_projek/crudtaprojek/register.php'),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode({
-  //       'nama': firstName + lastName,
-  //       'firstname': firstName,
-  //       'lastname': lastName,
-  //       'email': email,
-  //       'uid': uid,
-  //     }),
-  //   );
-
-  //   var data = json.decode(response.body);
-  //   if (data == "Error") {
-  //     // User already exist
-  //     print("User already exists");
-  //   } else {
-  //     // Registration successful
-  //     print("Registration successful");
-  //   }
-  // }
-  // Future _signUp() async {
-  //   String email = _emailController.text;
-  //   String password = _passwordController.text;
-  //   String firstName = _nameController.text;
-  //   String lastName = _lastnameController.text;
-  //   User? user = await _auth.signUpWithEmailAndPassword(
-  //       email, password, firstName, lastName);
-
-  //   if (user != null) {
-  //     register();
-  //     Navigator.pushNamed(context, HomeScreen.routeName);
-  //     print("Succesfully created");
-  //   } else {
-  //     print('some error occured');
-  //   }
-  // }
 }

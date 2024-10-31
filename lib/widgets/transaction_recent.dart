@@ -36,19 +36,28 @@ class _TransactionRecentState extends State<TransactionRecent> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Reservation>>(
-        future: reservation,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return buildShimmer();
-          } else if (snapshot.hasError) {
-            print(snapshot);
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else if (snapshot.hasData) {
-            reservationData = snapshot.data!;
+      future: reservation,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return buildShimmer();
+        } else if (snapshot.hasError) {
+          print(snapshot);
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (snapshot.hasData) {
+          reservationData = snapshot.data!;
+          if (reservationData.isEmpty) {
+            // Jika data kosong, tampilkan teks "kosong"
+            return Center(child: Text("kosong01"));
+          } else {
             print('ni tes index${reservationData[0]}');
+            return buildListView();
           }
-          return buildListView();
-        });
+        } else {
+          // Jika snapshot tidak memiliki data, tampilkan teks "kosong"
+          return Center(child: Text("kosong02"));
+        }
+      },
+    );
   }
 
   Widget buildShimmer() {
@@ -183,7 +192,7 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                               constraints: const BoxConstraints(
                                                   maxWidth: 196),
                                               child: Text(
-                                                'blabla',
+                                                'Rafting rype',
                                                 style: GoogleFonts.montserrat(
                                                   textStyle: const TextStyle(
                                                     color: Colors.black,
@@ -213,24 +222,6 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                Text(
-                                                                  'sadasd',
-                                                                  style: GoogleFonts
-                                                                      .montserrat(
-                                                                    textStyle:
-                                                                        const TextStyle(
-                                                                      color: Colors
-                                                                          .black54,
-                                                                      fontSize:
-                                                                          11,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      letterSpacing:
-                                                                          -0.6,
-                                                                    ),
-                                                                  ),
-                                                                ),
                                                                 Text(
                                                                   "${reservationData[0].rsvDatetime} - ${reservationData[0].rsvDatetimeEnd}\n", //Deluxe Room
                                                                   style: GoogleFonts

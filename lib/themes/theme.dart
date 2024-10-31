@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Warna Utama Aplikasi
@@ -20,7 +21,19 @@ class AppTheme {
   static const Color appBarColor = Color(0xFF1D976C);
   static const Color iconColor = Colors.white;
 
-  // Warna tambahan lainnya
-  static const Color errorColor = Colors.red;
-  static const Color successColor = Colors.green;
+  static TextStyle settingTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 18,
+    color: Color.fromARGB(221, 51, 32, 32),
+    fontWeight: FontWeight.w500,
+  ));
+
+  static TextStyle paymentMethodeTextStyle = GoogleFonts.montserrat(
+    textStyle: const TextStyle(
+      color: Colors.black87,
+      fontSize: 22,
+      fontWeight: FontWeight.w500,
+      letterSpacing: -0.2,
+    ),
+  );
 }

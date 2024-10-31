@@ -114,6 +114,14 @@ class _BookingPageState extends State<BookingPage> {
     }
   }
 
+  String formatRupiah(int price) {
+    if (price == 0) {
+      return 'Rp. -';
+    } else {
+      return 'Rp. ${price.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match match) => '${match[1]}.')}';
+    }
+  }
+
   void fetchData() async {
     await _getdata();
   }
@@ -124,7 +132,7 @@ class _BookingPageState extends State<BookingPage> {
   bool _isdatechoosed = false;
   bool _ispersonchoosed = false;
   String hargaa = '';
-  double totalHarga = 0;
+  int totalHarga = 0;
   String hargaFix = '0';
   DateTime? startDate;
   DateTime? endDate;
@@ -137,6 +145,7 @@ class _BookingPageState extends State<BookingPage> {
   List<String> selectedRoomIds = [];
   String roomsIds = '';
   final TextEditingController _maxParController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -160,6 +169,10 @@ class _BookingPageState extends State<BookingPage> {
       maxParticipant = (smallRaftQuantity * 4) +
           (mediumRaftQuantity * 5) +
           (largeRaftQuantity * 6);
+      totalHarga = (smallRaftQuantity * 700000) +
+          (mediumRaftQuantity * 900000) +
+          (largeRaftQuantity * 1050000);
+      formatRupiah(totalHarga);
     });
     int getMaxParticipant() {
       try {
@@ -178,6 +191,12 @@ class _BookingPageState extends State<BookingPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -188,6 +207,7 @@ class _BookingPageState extends State<BookingPage> {
             ),
           ),
           SingleChildScrollView(
+            controller: _scrollController,
             child: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,6 +228,14 @@ class _BookingPageState extends State<BookingPage> {
                             indicatorRadius: 4,
                             isLoop: true,
                             children: [
+                              Image.asset(
+                                'assets/images/im2.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                              Image.asset(
+                                'assets/images/im2.jpg',
+                                fit: BoxFit.cover,
+                              ),
                               Container(
                                 width: 80,
                                 height: 80,
@@ -217,14 +245,6 @@ class _BookingPageState extends State<BookingPage> {
                                       image: NetworkImage(widget.url_foto),
                                       fit: BoxFit.cover),
                                 ),
-                              ),
-                              Image.asset(
-                                'assets/images/im2.jpg',
-                                fit: BoxFit.cover,
-                              ),
-                              Image.asset(
-                                'assets/images/im2.jpg',
-                                fit: BoxFit.cover,
                               ),
                               Image.asset(
                                 'assets/images/im2.jpg',
@@ -557,6 +577,7 @@ class _BookingPageState extends State<BookingPage> {
                         ),
                         RaftingCard(
                           boatType: 'Small Raft',
+                          maxParticipant: '4 People',
                           price: 700000,
                           onQuantityChanged: (int newQuantity) {
                             setState(() {
@@ -567,6 +588,7 @@ class _BookingPageState extends State<BookingPage> {
                         ),
                         RaftingCard(
                           boatType: 'Medium Raft',
+                          maxParticipant: '5 People',
                           price: 900000,
                           onQuantityChanged: (int newQuantity) {
                             setState(() {
@@ -578,6 +600,7 @@ class _BookingPageState extends State<BookingPage> {
                         RaftingCard(
                           boatType: 'Large Raft',
                           price: 1050000,
+                          maxParticipant: '6 People',
                           onQuantityChanged: (int newQuantity) {
                             setState(() {
                               largeRaftQuantity = newQuantity;
@@ -847,9 +870,8 @@ class _BookingPageState extends State<BookingPage> {
                                                                   _Listdata[
                                                                           index]
                                                                       ['harga'];
-                                                              harga =
-                                                                  double.parse(
-                                                                      hargaa);
+                                                              harga = int.parse(
+                                                                  hargaa);
                                                               totalHarga +=
                                                                   harga;
                                                               hargaFix =
@@ -907,9 +929,8 @@ class _BookingPageState extends State<BookingPage> {
                                                                   _Listdata[
                                                                           index]
                                                                       ['harga'];
-                                                              harga =
-                                                                  double.parse(
-                                                                      hargaa);
+                                                              harga = int.parse(
+                                                                  hargaa);
                                                               totalHarga -=
                                                                   harga;
                                                               hargaFix =
@@ -1157,6 +1178,15 @@ class _BookingPageState extends State<BookingPage> {
                                               FilteringTextInputFormatter
                                                   .digitsOnly
                                             ],
+                                            onTap: () {
+                                              _scrollController.animateTo(
+                                                _scrollController
+                                                    .position.maxScrollExtent,
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                curve: Curves.easeInOut,
+                                              );
+                                            },
                                             onChanged: (value) {
                                               // Logika untuk memeriksa nilai input
                                               if (value.isNotEmpty) {
@@ -1173,6 +1203,9 @@ class _BookingPageState extends State<BookingPage> {
                                                           .toString(); // Update with valid value
                                                 }
                                               }
+                                            },
+                                            onEditingComplete: () {
+                                              FocusScope.of(context).unfocus();
                                             },
                                             decoration: InputDecoration(
                                               hintText: '0',
@@ -1211,15 +1244,29 @@ class _BookingPageState extends State<BookingPage> {
                                             ),
                                           ),
                                         ),
-                                        Text(
-                                          'Max Participant: $maxParticipant',
-                                          style: GoogleFonts.montserrat(
-                                            textStyle: const TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Max Participant: ',
+                                              style: GoogleFonts.montserrat(
+                                                textStyle: const TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            Text(
+                                              '$maxParticipant',
+                                              style: GoogleFonts.montserrat(
+                                                textStyle: const TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -1419,7 +1466,7 @@ class _BookingPageState extends State<BookingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Rp.${hargaFix}',
+                    formatRupiah(totalHarga),
                     style: GoogleFonts.montserrat(
                       textStyle: const TextStyle(
                         color: Colors.white,

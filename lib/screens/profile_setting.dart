@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_project/services/fetch_data_service.dart';
 import 'package:flutter_project/services/firebase_auth_service.dart';
+import 'package:flutter_project/services/user_services.dart';
+import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,15 +36,32 @@ class _ProfileSettingState extends State<ProfileSetting> {
   bool isDataAvail = false;
   String uid = '';
   String id = '';
+  Map<String, dynamic> userData = {};
+  Future<Map<String, dynamic>>? userProfile;
 
   @override
   void initState() {
-    FetchDataService().fetchUserData(firstname, lastname, email, pp);
+    userProfile = UserServices().getProfile();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: userProfile,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: buildScreen(context));
+            // } else if (snapshot.hasError) {
+            //   return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            userData = snapshot.data!;
+          }
+          return buildScreen(context);
+        });
+  }
+
+  Widget buildScreen(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -68,9 +86,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
             Stack(
               children: [
                 Container(
-                  height: 200, // Sesuaikan dengan tinggi gambar profil Anda
-                  color: Color(0xFF50B498),
-                ),
+                    height: 200, // Sesuaikan dengan tinggi gambar profil Anda
+                    color: Color(0xFFFFF492)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -115,11 +132,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                           },
                                           child: Container(
                                             padding: EdgeInsets.all(4),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Color(0xFF50B498),
-                                            ),
-                                            child: Icon(
+                                            decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.black26),
+                                            child: const Icon(
                                               Icons.camera_alt,
                                               color: Colors.white,
                                               size: 20,
@@ -136,18 +152,19 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        firstname ?? 'Loading...',
+                                        '${userData['name'] ?? 'loading'}',
                                         style: GoogleFonts.montserrat(
                                           fontSize: 24,
-                                          color: Colors.white,
+                                          color: AppTheme.darkBlue,
                                           fontWeight: FontWeight.w800,
                                         ),
                                       ),
                                       Text(
-                                        email ?? 'Loading...',
+                                        '${userData['email'] ?? 'loading'}',
                                         style: GoogleFonts.montserrat(
                                           fontSize: 14,
-                                          color: Colors.white54,
+                                          color: AppTheme.darkBlue
+                                              .withOpacity(0.6),
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -252,39 +269,89 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                           },
                                         ),
                                         const SizedBox(height: 26),
-                                        ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(
-                                              Colors.green.shade700,
+                                        // Container(
+                                        //   padding: const EdgeInsets.symmetric(
+                                        //     horizontal: 30,
+                                        //   ),
+                                        //   height: 50,
+                                        //   child: ElevatedButton(
+                                        //     onPressed: () async {
+                                        //       if (_signUpFormKey.currentState!
+                                        //           .validate()) {
+                                        //         await AuthService()
+                                        //             .registerUser(
+                                        //           _nameController.text,
+                                        //           _lastnameController.text,
+                                        //           _emailController.text,
+                                        //           _passwordController.text,
+                                        //         );
+                                        //         Navigator.pushNamed(context,
+                                        //             MainScreen.routeName);
+                                        //       }
+                                        //     },
+                                        //     style: ElevatedButton.styleFrom(
+                                        //       shape: RoundedRectangleBorder(
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(12),
+                                        //       ),
+                                        //       backgroundColor:
+                                        //           AppTheme.darkBlue,
+                                        //     ),
+                                        //     child: Row(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment.center,
+                                        //       children: [
+                                        //         Text(
+                                        //           'SIGN UP',
+                                        //           style: GoogleFonts.montserrat(
+                                        //             textStyle: const TextStyle(
+                                        //               color: Colors.white,
+                                        //               fontSize: 18,
+                                        //               fontWeight:
+                                        //                   FontWeight.w800,
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 26),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          height: 50,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              backgroundColor:
+                                                  AppTheme.darkBlue,
                                             ),
-                                            foregroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(
-                                              Colors.white,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            if (_formKey.currentState
-                                                    ?.validate() ??
-                                                false) {
-                                              _formKey.currentState?.save();
-                                              updateUserData(
-                                                  id,
-                                                  _name.text.toString(),
-                                                  _number.text.toString(),
-                                                  _birthdate.text.toString(),
-                                                  _address.text
-                                                      .toString()); // Proses data formulir di sini
-                                            }
-                                          },
-                                          child: Text(
-                                            'Save Profile',
-                                            style: GoogleFonts.montserrat(
-                                              fontSize: 14,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
+                                            onPressed: () {
+                                              if (_formKey.currentState
+                                                      ?.validate() ??
+                                                  false) {
+                                                _formKey.currentState?.save();
+                                                updateUserData(
+                                                    id,
+                                                    _name.text.toString(),
+                                                    _number.text.toString(),
+                                                    _birthdate.text.toString(),
+                                                    _address.text
+                                                        .toString()); // Proses data formulir di sini
+                                              }
+                                            },
+                                            child: Text(
+                                              'Save Profile',
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
                                           ),
                                         ),

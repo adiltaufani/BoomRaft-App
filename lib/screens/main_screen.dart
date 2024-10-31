@@ -1,5 +1,5 @@
+import 'package:flutter_project/routes/router.dart';
 import 'package:flutter_project/screens/home_screen.dart';
-import 'package:flutter_project/services/fetch_data_service.dart';
 import 'package:flutter_project/themes/theme.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:geocoding/geocoding.dart';
@@ -31,20 +31,21 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   bool isData = false;
 
   String currentScreenName = 'HomeScreen';
-  Widget _currentScreen = const HomeScreen();
 
   void _onMenuItemClicked(Widget screen) {
     setState(() {
       currentScreenName = screen.runtimeType.toString();
-      _currentScreen =
+      currentScreen =
           screen; // Mengubah screen berdasarkan item menu yang diklik
     });
   }
 
   @override
   void initState() {
-    FetchDataService().fetchUserData(firstname, lastname, email, pp);
     runPHPCodeOnMainScreen();
+
+    currentScreen ??= const HomeScreen();
+    currentScreenName = currentScreen.runtimeType.toString();
 
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
@@ -88,8 +89,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             IconButton(
               onPressed: () {
                 setState(() {
-                  // Mengubah _currentScreen menjadi NotificationPage saat tombol ditekan
-                  _currentScreen = const NotificationPage();
+                  // Mengubah currentScreen menjadi NotificationPage saat tombol ditekan
+                  currentScreen = const NotificationPage();
+                  currentScreenName = currentScreen.runtimeType.toString();
                 });
               },
               icon: Image.asset(
@@ -134,7 +136,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-      body: _currentScreen,
+      body: currentScreen,
     );
   }
 

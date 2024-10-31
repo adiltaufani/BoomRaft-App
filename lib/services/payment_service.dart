@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_project/services/token_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService {
+class PaymentService {
   String apiUrl = dotenv.env['API_URL'] ?? 'Default URL';
-  final tokenService = TokenService();
 
   Future<void> registerUser(
       String firstName, String lastName, String email, String password) async {
@@ -32,14 +30,14 @@ class AuthService {
       if (response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
 
-        final String token = responseData['user']?['token'];
+        // Ambil token dari response
+        final token = responseData['token'];
 
         // Simpan token di SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('authToken', token);
 
-        // print('Sign up successful, token saved: $token');
-        return responseData;
+        print('Signup successful, token saved: $token');
       } else {
         throw Exception('Failed to sign up');
       }
@@ -91,36 +89,6 @@ class AuthService {
     } catch (error) {
       print("Error during sign out: $error");
       // Tambahkan penanganan kesalahan sesuai kebutuhan
-    }
-  }
-
-  Future<bool> validateOtp(String otp) async {
-    final url = Uri.parse('$apiUrl/api/users/verify-otp');
-    Map<String, String> userData = {
-      'otp': otp,
-    };
-    String? token = await tokenService.getToken();
-
-    try {
-      print(token);
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token', // Menambahkan Bearer token
-        },
-        body: jsonEncode(userData),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      throw Exception('Error OTP: $e');
     }
   }
 }

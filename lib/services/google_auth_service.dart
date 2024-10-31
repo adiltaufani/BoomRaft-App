@@ -24,16 +24,4 @@ class GoogleAuthService {
       // Tambahkan penanganan kesalahan sesuai kebutuhan
     }
   }
-
-  Future<void> signOut(BuildContext context) async {
-    try {
-      await GoogleSignIn().signOut();
-      await FirebaseAuth.instance.signOut();
-      // Setelah berhasil logout, navigasi ke halaman login
-      Navigator.pushReplacementNamed(context, '/login-screen');
-    } catch (error) {
-      print("Error during sign out: $error");
-      // Tambahkan penanganan kesalahan sesuai kebutuhan
-    }
-  }
 }

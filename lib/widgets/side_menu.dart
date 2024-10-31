@@ -4,7 +4,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/contactus_screen.dart';
+import 'package:flutter_project/screens/faq_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
+import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/services/user_services.dart';
 import 'package:flutter_project/themes/theme.dart';
@@ -52,8 +54,8 @@ class _SideMenuState extends State<SideMenu> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return buildDrawer(context);
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            // } else if (snapshot.hasError) {
+            //   return Center(child: Text("Error: ${snapshot.error}"));
           } else if (snapshot.hasData) {
             userData = snapshot.data!;
           }
@@ -190,7 +192,7 @@ class _SideMenuState extends State<SideMenu> {
                   _buildListTile(
                     context,
                     title: 'Help',
-                    screenWidget: SettingPage(),
+                    screenWidget: FaqScreen(),
                     icon: Icons.help_outline_rounded,
                   ),
                   _buildListTile(
@@ -199,7 +201,7 @@ class _SideMenuState extends State<SideMenu> {
                     screenWidget: LoginScreen(),
                     icon: Icons.login_rounded,
                     onTap: () {
-                      authService.signOut(context);
+                      AuthService().signOut(context);
                     },
                   ),
                 ],

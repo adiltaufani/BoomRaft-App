@@ -13,6 +13,8 @@ import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../routes/router.dart';
+
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login-screen';
   const LoginScreen({super.key});
@@ -138,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (_signInFormKey.currentState!.validate()) {
                             await AuthService().loginUser(_emailController.text,
                                 _passwordController.text);
+                            currentScreen = HomeScreen();
                             Navigator.pushNamed(context, MainScreen.routeName);
                           }
                         },
@@ -250,26 +253,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  void _signIn() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
-    if (user != null) {
-      print("Successfully signed in");
-      Navigator.pushNamed(context, HomeScreen.routeName);
-    } else {
-      print('Some error occurred');
-      Fluttertoast.showToast(
-        msg: "Incorrect email or password",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
   }
 }

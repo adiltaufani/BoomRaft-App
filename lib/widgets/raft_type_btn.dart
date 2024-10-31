@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class RaftingCard extends StatefulWidget {
   final int price;
   final String boatType;
+  final String maxParticipant;
   final Function(int) onQuantityChanged;
   final Function(int) onMaxParticipantChanged;
 
@@ -14,7 +15,8 @@ class RaftingCard extends StatefulWidget {
       {required this.price,
       required this.boatType,
       required this.onQuantityChanged,
-      required this.onMaxParticipantChanged});
+      required this.onMaxParticipantChanged,
+      required this.maxParticipant});
 
   @override
   _RaftingCardState createState() => _RaftingCardState();
@@ -105,7 +107,7 @@ class _RaftingCardState extends State<RaftingCard> {
                       Row(
                         children: [
                           Text(
-                            "4 people",
+                            widget.maxParticipant,
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                 color: Colors.black54,

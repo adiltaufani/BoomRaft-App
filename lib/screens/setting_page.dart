@@ -1,6 +1,13 @@
 import 'dart:convert';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_project/routes/router.dart' as router;
+import 'package:flutter_project/routes/router.dart';
+import 'package:flutter_project/screens/contactus_screen.dart';
+import 'package:flutter_project/screens/faq_screen.dart';
+import 'package:flutter_project/screens/main_screen.dart';
+import 'package:flutter_project/screens/notification_page.dart';
+import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/services/user_services.dart';
 import 'package:flutter_project/themes/theme.dart';
@@ -52,8 +59,8 @@ class _SettingPageState extends State<SettingPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: buildScreen(context));
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            // } else if (snapshot.hasError) {
+            //   return Center(child: Text("Error: ${snapshot.error}"));
           } else if (snapshot.hasData) {
             userData = snapshot.data!;
           }
@@ -63,23 +70,6 @@ class _SettingPageState extends State<SettingPage> {
 
   Widget buildScreen(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-        title: const Center(child: Text('Settings')),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.home,
-                color: Color(0x00ffffff),
-              ))
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,7 +185,7 @@ class _SettingPageState extends State<SettingPage> {
                         style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                           fontSize: 20,
-                          color: Colors.black87,
+                          color: AppTheme.darkBlue,
                           fontWeight: FontWeight.w600,
                         )),
                       ),
@@ -205,88 +195,44 @@ class _SettingPageState extends State<SettingPage> {
                             left: 8.0, top: 4, bottom: 12),
                         child: InkWell(
                           onTap: () {
-                            //
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset('assets/images/wallet.png'),
-                              const SizedBox(width: 20),
-                              Text(
-                                'Pay Account',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                color: Colors.white10,
-                              )),
-                              const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.black45,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, top: 4, bottom: 12),
-                        child: InkWell(
-                          onTap: () {
-                            //
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset('assets/images/workcase.png'),
-                              const SizedBox(width: 20),
-                              Text(
-                                'Change to Business Account',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                color: Colors.white10,
-                              )),
-                              const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: Colors.black45,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, top: 4, bottom: 12),
-                        child: InkWell(
-                          onTap: () {
                             Navigator.pushNamed(
-                                context, TransactionScreen.routeName);
+                                context, ProfileSetting.routeName);
                           },
                           child: Row(
                             children: [
-                              Image.asset('assets/images/transaction.png'),
-                              const SizedBox(width: 20),
                               Text(
-                                'Transaction',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
+                                'Edit Profile',
+                                style: AppTheme.settingTextStyle,
                               ),
+                              Expanded(
+                                  child: Container(
+                                color: Colors.white10,
+                              )),
+                              const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: Colors.black45,
+                                size: 18,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, top: 4, bottom: 12),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              // Mengubah _currentScreen menjadi NotificationPage saat tombol ditekan
+                              currentScreen = const TransactionScreen();
+                              Navigator.pushNamed(
+                                  context, MainScreen.routeName);
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Text('Transaction',
+                                  style: AppTheme.settingTextStyle),
                               Expanded(
                                   child: Container(
                                 color: Colors.white10,
@@ -317,7 +263,7 @@ class _SettingPageState extends State<SettingPage> {
                         style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                           fontSize: 20,
-                          color: Colors.black87,
+                          color: AppTheme.darkBlue,
                           fontWeight: FontWeight.w600,
                         )),
                       ),
@@ -330,16 +276,9 @@ class _SettingPageState extends State<SettingPage> {
                           },
                           child: Row(
                             children: [
-                              Image.asset('assets/images/language.png'),
-                              const SizedBox(width: 20),
                               Text(
                                 'Language',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
+                                style: AppTheme.settingTextStyle,
                               ),
                               Expanded(
                                   child: Container(
@@ -363,16 +302,9 @@ class _SettingPageState extends State<SettingPage> {
                           },
                           child: Row(
                             children: [
-                              Image.asset('assets/images/lock.png'),
-                              const SizedBox(width: 20),
                               Text(
                                 'Change Password',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
+                                style: AppTheme.settingTextStyle,
                               ),
                               Expanded(
                                   child: Container(
@@ -404,7 +336,7 @@ class _SettingPageState extends State<SettingPage> {
                         style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                           fontSize: 20,
-                          color: Colors.black87,
+                          color: AppTheme.darkBlue,
                           fontWeight: FontWeight.w600,
                         )),
                       ),
@@ -413,20 +345,18 @@ class _SettingPageState extends State<SettingPage> {
                         padding: const EdgeInsets.only(left: 8.0, bottom: 12),
                         child: InkWell(
                           onTap: () {
-                            //
+                            setState(() {
+                              // Mengubah _currentScreen menjadi NotificationPage saat tombol ditekan
+                              currentScreen = const ContactusScreen();
+                              Navigator.pushNamed(
+                                  context, MainScreen.routeName);
+                            });
                           },
                           child: Row(
                             children: [
-                              Image.asset('assets/images/contact_us.png'),
-                              const SizedBox(width: 20),
                               Text(
                                 'Contact Us',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
+                                style: AppTheme.settingTextStyle,
                               ),
                               Expanded(
                                   child: Container(
@@ -446,20 +376,18 @@ class _SettingPageState extends State<SettingPage> {
                             left: 8.0, top: 4, bottom: 12),
                         child: InkWell(
                           onTap: () {
-                            //
+                            setState(() {
+                              // Mengubah _currentScreen menjadi NotificationPage saat tombol ditekan
+                              currentScreen = const FaqScreen();
+                              Navigator.pushNamed(
+                                  context, MainScreen.routeName);
+                            });
                           },
                           child: Row(
                             children: [
-                              Image.asset('assets/images/faq.png'),
-                              const SizedBox(width: 20),
                               Text(
                                 'FAQ',
-                                style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w600,
-                                )),
+                                style: AppTheme.settingTextStyle,
                               ),
                               Expanded(
                                   child: Container(
@@ -497,7 +425,7 @@ class _SettingPageState extends State<SettingPage> {
                                 return LogoutDialog(
                                   onConfirmLogout: () {
                                     // Panggil fungsi logout di sini
-                                    authService.signOut(context);
+                                    AuthService().signOut(context);
                                   },
                                 );
                               },
@@ -511,9 +439,9 @@ class _SettingPageState extends State<SettingPage> {
                                 'Logout',
                                 style: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     color: Color(0xFF6B0B0B),
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),

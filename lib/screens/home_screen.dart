@@ -93,23 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  Positioned(
-                    top: 15,
-                    right: 15,
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        size: 20,
-                        color: const Color.fromARGB(255, 27, 94, 32),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
