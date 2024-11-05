@@ -34,10 +34,11 @@ class _ContactusScreenState extends State<ContactusScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Expanded(
-            child: Container(
+        Container(
+          width: double.infinity,
+          height: double.infinity,
           color: AppTheme.backgroundColor,
-        )),
+        ),
         Positioned(
             bottom: -170,
             right: -60,

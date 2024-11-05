@@ -51,11 +51,19 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.0.5
 
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/icon/app_icon.png"
+
+flutter_native_splash:
+  color: "#ffffff" # Warna latar belakang splash screen
+  image: assets/icon/app_icon.png # Gambar yang ditampilkan
+  android: true
+  ios: true
+  web: false
 
 flutter:
   uses-material-design: true

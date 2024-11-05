@@ -159,7 +159,7 @@ class _SettingPageState extends State<SettingPage> {
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios_rounded,
-                                      color: AppTheme.backgroundColor,
+                                      color: AppTheme.darkBlue,
                                     ),
                                   ],
                                 ),

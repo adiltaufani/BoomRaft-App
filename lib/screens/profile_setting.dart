@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_project/routes/router.dart';
+import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/services/firebase_auth_service.dart';
 import 'package:flutter_project/services/user_services.dart';
 import 'package:flutter_project/themes/theme.dart';
@@ -66,7 +68,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            currentScreen = const ProfileSetting();
+            Navigator.pushNamed(context, MainScreen.routeName);
+          },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
         title: const Center(child: Text('Profile Settings')),
