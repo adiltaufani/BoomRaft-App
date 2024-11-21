@@ -43,13 +43,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     userProfile = UserServices().getProfile();
-    fetchData();
     super.initState();
-  }
-
-  Future<void> fetchData() async {
-    await fetchUserData();
-    setState(() {});
   }
 
   @override

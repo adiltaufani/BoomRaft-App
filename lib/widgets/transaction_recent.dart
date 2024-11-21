@@ -35,6 +35,8 @@ class _TransactionRecentState extends State<TransactionRecent> {
 
   @override
   Widget build(BuildContext context) {
+    // int smallRaftCount = reservation.boat.boatId == 2 ? 1 : 0;
+    // int mediumRaftCount = reservation.boat.boatId == 1 ? 1 : 0;
     return FutureBuilder<List<Reservation>>(
       future: reservation,
       builder: (context, snapshot) {
@@ -164,9 +166,11 @@ class _TransactionRecentState extends State<TransactionRecent> {
                                     const EdgeInsets.fromLTRB(12, 12, 2, 10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  // image: DecorationImage(
-                                  //     image: NetworkImage(cleanedUrlFoto),
-                                  //     fit: BoxFit.cover),
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/im2.jpg'),
+                                      // NetworkImage(cleanedUrlFoto),
+                                      fit: BoxFit.cover),
                                 ),
                               ),
                               Container(

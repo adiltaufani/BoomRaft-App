@@ -93,8 +93,8 @@ class _BookingPageState extends State<BookingPage> {
         formattedTanggalbesok = tanggalbesok.toIso8601String().substring(0, 10);
         DateTime date = DateTime.parse(formattedTanggal);
         DateTime date2 = DateTime.parse(formattedTanggalbesok);
-        tanggalAwal = DateFormat('dd MMMM yyyy').format(date);
-        tanggalAkhir = DateFormat('dd MMMM yyyy').format(date2);
+        tanggalAwal = DateFormat('dd MMM yyyy').format(date);
+        tanggalAkhir = DateFormat('dd MMM yyyy').format(date2);
         startdateNew = tanggalAwal;
         enddateNew = tanggalAkhir;
         final response = await http.get(
@@ -144,6 +144,7 @@ class _BookingPageState extends State<BookingPage> {
   int _selectedValueChild = 0;
   List<String> selectedRoomIds = [];
   String roomsIds = '';
+  bool _showFlash = false;
   final TextEditingController _maxParController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
@@ -160,8 +161,12 @@ class _BookingPageState extends State<BookingPage> {
     formattedEndDate = selectedDates.end.toIso8601String().substring(0, 10);
     DateTime date = DateTime.parse(formattedStartDate);
     DateTime date2 = DateTime.parse(formattedEndDate);
-    startdateNew = DateFormat('dd MMMM yyyy').format(date);
-    enddateNew = DateFormat('dd MMMM yyyy').format(date2);
+    startdateNew = DateFormat('dd MMM yyyy').format(date);
+    enddateNew = DateFormat('dd MMM yyyy').format(date2);
+  }
+
+  void _addDocumentationPrice() {
+    setState(() {});
   }
 
   void _updateMaxParticipant(int newMaxParticipant) {
@@ -172,8 +177,17 @@ class _BookingPageState extends State<BookingPage> {
       totalHarga = (smallRaftQuantity * 700000) +
           (mediumRaftQuantity * 900000) +
           (largeRaftQuantity * 1050000);
+
       formatRupiah(totalHarga);
+      _showFlash = true;
     });
+
+    Future.delayed(const Duration(milliseconds: 600), () {
+      setState(() {
+        _showFlash = false;
+      });
+    });
+
     int getMaxParticipant() {
       try {
         // Mengonversi teks di dalam controller menjadi int
@@ -1322,6 +1336,23 @@ class _BookingPageState extends State<BookingPage> {
                                   onChanged: (bool? value) {
                                     setState(() {
                                       docuCheckBox = value ?? false;
+                                      if (docuCheckBox) {
+                                        totalHarga +=
+                                            100000; // Tambahkan harga dokumentasi jika checkbox dipilih
+                                      } else {
+                                        totalHarga -=
+                                            100000; // Kurangi harga dokumentasi jika checkbox tidak dipilih
+                                      }
+                                      _showFlash = true;
+
+                                      Future.delayed(
+                                          const Duration(milliseconds: 600),
+                                          () {
+                                        setState(() {
+                                          _showFlash = false;
+                                        });
+                                      });
+                                      print(totalHarga);
                                     });
                                   },
                                   activeColor: AppTheme.darkBlue,
@@ -1465,16 +1496,35 @@ class _BookingPageState extends State<BookingPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    formatRupiah(totalHarga),
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -0.6,
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Flash background
+                      AnimatedOpacity(
+                        opacity: _showFlash ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Container(
+                          height: 28, // Sesuaikan dengan ukuran teks
+                          width: 120, // Sesuaikan dengan lebar teks
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2), // Warna flash
+                            borderRadius: BorderRadius.circular(20), // Opsional
+                          ),
+                        ),
                       ),
-                    ),
+                      // Teks utama
+                      Text(
+                        formatRupiah(totalHarga),
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.6,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
                     "Book Now",

@@ -12,13 +12,13 @@ class LogoutDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0), // Mengubah sudut dialog
       ),
-      title: Text(
+      title: const Text(
         "Konfirmasi Logout",
         style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold), // Mengubah gaya teks judul
       ),
-      content: Text(
+      content: const Text(
         "Apakah Anda yakin ingin logout?",
         style: TextStyle(color: Colors.black), // Mengubah gaya teks konten
       ),
@@ -27,7 +27,7 @@ class LogoutDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop(); // Tutup dialog
           },
-          child: Text(
+          child: const Text(
             "Batal",
             style: TextStyle(color: Colors.black), // Mengubah gaya teks tombol
           ),

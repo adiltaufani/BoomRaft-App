@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/routes/router.dart';
 import 'package:flutter_project/screens/contactus_screen.dart';
 import 'package:flutter_project/screens/faq_screen.dart';
 import 'package:flutter_project/screens/login_screen.dart';
+import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/services/auth_service.dart';
 import 'package:flutter_project/services/google_auth_service.dart';
 import 'package:flutter_project/services/user_services.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_project/screens/notification_page.dart';
 import 'package:flutter_project/screens/transaction_screen.dart';
 import 'package:flutter_project/screens/setting_page.dart';
 import 'package:flutter_project/variables.dart';
+import 'package:flutter_project/widgets/logout_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
@@ -114,7 +117,8 @@ class _SideMenuState extends State<SideMenu> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: ListTile(
                           onTap: () {
-                            Navigator.pushNamed(context, SettingPage.routeName);
+                            currentScreen = const SettingPage();
+                            Navigator.pushNamed(context, MainScreen.routeName);
                           },
                           leading: const CircleAvatar(
                             radius: 28,
@@ -201,7 +205,17 @@ class _SideMenuState extends State<SideMenu> {
                     screenWidget: LoginScreen(),
                     icon: Icons.login_rounded,
                     onTap: () {
-                      AuthService().signOut(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return LogoutDialog(
+                            onConfirmLogout: () {
+                              // Panggil fungsi logout di sini
+                              AuthService().signOut(context);
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                 ],

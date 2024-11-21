@@ -58,6 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
   String? user_id;
   String uid = '';
   bool firstnameTrigger = true;
+  bool isTransferBankExpanded = false;
   List _Listdata = [];
 
   Future _getdata() async {
@@ -742,71 +743,261 @@ class _PaymentPageState extends State<PaymentPage> {
                                   ),
                                 ),
                               ),
-                              Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 36,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Pay Now',
-                                          style: GoogleFonts.montserrat(
-                                            textStyle: const TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: -0.4,
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: 36,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Klik BCA',
+                                            style: GoogleFonts.montserrat(
+                                              textStyle: const TextStyle(
+                                                color: Colors.black87,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: -0.4,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Radio<String>(
-                                          activeColor: const Color(0xFF225B7B),
-                                          value: options[0],
-                                          groupValue: selectedPayment,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedPayment =
-                                                  value.toString();
-                                            });
-                                          },
-                                        ),
-                                      ],
+                                          Radio<String>(
+                                            activeColor:
+                                                const Color(0xFF225B7B),
+                                            value: options[0],
+                                            groupValue: selectedPayment,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedPayment =
+                                                    value.toString();
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 44,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Pay on the Spot',
-                                          style: GoogleFonts.montserrat(
-                                            textStyle: const TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: -0.4,
+                                    const Divider(
+                                      thickness: 0.6,
+                                    ),
+                                    SizedBox(
+                                      height: 44,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Dana',
+                                            style: GoogleFonts.montserrat(
+                                              textStyle: const TextStyle(
+                                                color: Colors.black87,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: -0.4,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Radio<String>(
-                                          activeColor: const Color(0xFF225B7B),
-                                          value: options[1],
-                                          groupValue: selectedPayment,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedPayment =
-                                                  value.toString();
-                                            });
-                                          },
-                                        ),
-                                      ],
+                                          Radio<String>(
+                                            activeColor:
+                                                const Color(0xFF225B7B),
+                                            value: options[1],
+                                            groupValue: selectedPayment,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedPayment =
+                                                    value.toString();
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    const Divider(
+                                      thickness: 0.6,
+                                    ),
+                                    ListTile(
+                                      contentPadding: const EdgeInsets.only(
+                                          left: 0, right: 10),
+                                      title: Text('Transfer Bank',
+                                          style: isTransferBankExpanded
+                                              ? GoogleFonts.montserrat(
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                    letterSpacing: -0.4,
+                                                  ),
+                                                )
+                                              : GoogleFonts.montserrat(
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w500,
+                                                    letterSpacing: -0.4,
+                                                  ),
+                                                )),
+                                      trailing: Icon(
+                                        isTransferBankExpanded
+                                            ? Icons.keyboard_arrow_up
+                                            : Icons.keyboard_arrow_down,
+                                        color: Colors.black54,
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          isTransferBankExpanded =
+                                              !isTransferBankExpanded;
+                                        });
+                                      },
+                                    ),
+                                    if (isTransferBankExpanded)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'BRI',
+                                                  style: GoogleFonts.montserrat(
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      letterSpacing: -0.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Radio<String>(
+                                                  activeColor:
+                                                      const Color(0xFF225B7B),
+                                                  value: "BRI",
+                                                  groupValue: selectedPayment,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedPayment =
+                                                          value.toString();
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(
+                                              thickness: 0.6,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'BCA',
+                                                  style: GoogleFonts.montserrat(
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      letterSpacing: -0.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Radio<String>(
+                                                  activeColor:
+                                                      const Color(0xFF225B7B),
+                                                  value: "BCA",
+                                                  groupValue: selectedPayment,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedPayment =
+                                                          value.toString();
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(
+                                              thickness: 0.6,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Mandiri',
+                                                  style: GoogleFonts.montserrat(
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      letterSpacing: -0.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Radio<String>(
+                                                  activeColor:
+                                                      const Color(0xFF225B7B),
+                                                  value: "Mandiri",
+                                                  groupValue: selectedPayment,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedPayment =
+                                                          value.toString();
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(
+                                              thickness: 0.6,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'BNI',
+                                                  style: GoogleFonts.montserrat(
+                                                    textStyle: const TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      letterSpacing: -0.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Radio<String>(
+                                                  activeColor:
+                                                      const Color(0xFF225B7B),
+                                                  value: "BNI",
+                                                  groupValue: selectedPayment,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedPayment =
+                                                          value.toString();
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               )
                             ]),
                       ),

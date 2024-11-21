@@ -38,4 +38,34 @@ class UserServices {
       throw Exception('Error logging in: $e');
     }
   }
+
+  Future<void> updateProfile(
+      String name, String number, String birthDate, String address) async {
+    final url = Uri.parse('$apiUrl/api/users/edit-profile');
+    Map<String, dynamic> userData = {
+      'name': name,
+      'phone': number,
+      'birth': birthDate,
+      'city': address,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(userData),
+      );
+
+      if (response.statusCode == 200) {
+        print(userData);
+        final responseData = jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to log in');
+      }
+    } catch (e) {
+      throw Exception('Error logging in: $e');
+    }
+  }
 }

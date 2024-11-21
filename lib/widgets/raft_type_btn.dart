@@ -68,7 +68,7 @@ class _RaftingCardState extends State<RaftingCard> {
                   topRight: Radius.circular(12.0),
                 ),
                 child: Container(
-                    height: 120,
+                    height: 100,
                     width: double.maxFinite,
                     child: Image.asset(
                       'assets/images/rafting.jpg',
