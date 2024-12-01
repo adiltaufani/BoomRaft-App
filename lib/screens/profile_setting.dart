@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_project/routes/router.dart';
+import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/screens/setting_page.dart';
 import 'package:flutter_project/services/firebase_auth_service.dart';
@@ -347,20 +348,6 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                           ),
                                           backgroundColor: AppTheme.darkBlue,
                                         ),
-                                        // onPressed: () {
-                                        //   // if (_formKey.currentState
-                                        //   //         ?.validate() ??
-                                        //   //     false) {
-                                        //   //   _formKey.currentState?.save();
-                                        //   //   updateUserData(
-                                        //   //       id,
-                                        //   //       _name.text.toString(),
-                                        //   //       _number.text.toString(),
-                                        //   //       _birthdate.text.toString(),
-                                        //   //       _address.text
-                                        //   //           .toString()); // Proses data formulir di sini
-                                        //   // }
-                                        // },
                                         onPressed: () async {
                                           if (_formKey.currentState!
                                                   .validate() ??
@@ -372,6 +359,7 @@ class _ProfileSettingState extends State<ProfileSetting> {
                                               _birthdate.text,
                                               _address.text,
                                             );
+                                            currentScreen = const HomeScreen();
                                             Navigator.pushNamed(
                                                 context, MainScreen.routeName);
                                           }

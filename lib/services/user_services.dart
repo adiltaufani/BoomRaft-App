@@ -41,7 +41,7 @@ class UserServices {
 
   Future<void> updateProfile(
       String name, String number, String birthDate, String address) async {
-    final url = Uri.parse('$apiUrl/api/users/edit-profile');
+    final url = Uri.parse('$apiUrl/api/users/edit-profile?user_id=');
     Map<String, dynamic> userData = {
       'name': name,
       'phone': number,
@@ -50,9 +50,19 @@ class UserServices {
     };
 
     try {
+      print(userData);
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('authToken') ?? '';
+
+      if (token.isEmpty) {
+        throw Exception('No token found');
+      }
+      print(token);
+
       final response = await http.post(
         url,
         headers: <String, String>{
+          'Authorization': 'Bearer $token',
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(userData),

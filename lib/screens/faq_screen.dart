@@ -11,25 +11,6 @@ class FaqScreen extends StatefulWidget {
 }
 
 class _FaqScreenState extends State<FaqScreen> {
-  void _openWhatsApp() async {
-    const url = 'https://wa.me/'; // Bisa menambahkan nomor WhatsApp di sini
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  // Fungsi untuk membuka Instagram
-  void _openInstagram() async {
-    const url = 'https://instagram.com/'; // Bisa menambahkan username di sini
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

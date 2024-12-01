@@ -63,6 +63,11 @@ class _BookingPageState extends State<BookingPage> {
   int mediumRaftQuantity = 0;
   int largeRaftQuantity = 0;
   int maxParticipant = 0;
+  TimeOfDay? _selectedTime; // Untuk menyimpan waktu yang dipilih
+  bool _isTimeChosen = false;
+  DateTime? _selectedDate;
+  String formattedDate = '';
+  bool _isDateChosen = false;
 
   late Future<Map<String, bool>> futureFurnitureData;
 
@@ -322,11 +327,9 @@ class _BookingPageState extends State<BookingPage> {
                           ],
                         ),
                         const SizedBox(height: 5),
-
                         const SizedBox(
                           height: 8,
                         ),
-
                         const SizedBox(
                           height: 6,
                         ),
@@ -364,224 +367,147 @@ class _BookingPageState extends State<BookingPage> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () async {
-                                final DateTimeRange? dateTimeRange =
-                                    await showDateRangePicker(
+                                final DateTime? selectedDate =
+                                    await showDatePicker(
                                   context: context,
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(3000),
+                                  initialDate: DateTime
+                                      .now(), // Tanggal awal yang muncul
+                                  firstDate:
+                                      DateTime(2000), // Tanggal awal minimum
+                                  lastDate: DateTime(3000), // Tanggal maksimum
                                 );
-                                if (dateTimeRange != null) {
+                                if (selectedDate != null) {
                                   setState(() {
-                                    selectedDates = dateTimeRange;
-                                    startDate = dateTimeRange.start;
-                                    endDate = dateTimeRange.end;
-                                    _formatSelectedDates();
-                                    print('Tanggal Awal: $formattedStartDate');
-                                    print('Tanggal Akhir: $formattedEndDate');
-                                    _isdatechoosed = true;
+                                    _selectedDate = selectedDate;
+                                    formattedDate = DateFormat('dd MMM yyyy')
+                                        .format(selectedDate); // Format tanggal
+                                    _isDateChosen = true;
+                                    print(
+                                        'Tanggal yang dipilih: $formattedDate');
                                   });
                                 }
                               },
                               child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  height: 54,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 1,
-                                        blurRadius: 3,
-                                        offset: const Offset(1, 2),
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                      color: _isdatechoosed
-                                          ? AppTheme.darkBlue
-                                          : Colors.black26,
-                                      width: 1,
+                                duration: const Duration(milliseconds: 200),
+                                height: 54,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(1, 2),
                                     ),
+                                  ],
+                                  border: Border.all(
+                                    color: _isDateChosen
+                                        ? AppTheme.darkBlue
+                                        : Colors.black26,
+                                    width: 1,
                                   ),
-                                  child: _isdatechoosed
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                                Icons.calendar_month_rounded,
-                                                color: AppTheme.darkBlue),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '${startdateNew} / ${enddateNew}',
-                                              style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                                  color: AppTheme.darkBlue,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.calendar_month_rounded,
-                                              color: Color(0xFF0A8ED9),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '${tanggalAwal} / ${tanggalAkhir}',
-                                              style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                                  color: Colors.blue,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.calendar_today_rounded,
+                                        color: AppTheme.darkBlue),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      _isDateChosen
+                                          ? formattedDate
+                                          : 'Pick Date',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: AppTheme.darkBlue,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        //ADD GUEST'S
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                // Memunculkan Time Picker
+                                TimeOfDay? selectedTime = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now(),
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return MediaQuery(
+                                      data: MediaQuery.of(context).copyWith(
+                                          alwaysUse24HourFormat: true),
+                                      child: child!,
+                                    );
+                                  },
+                                );
 
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: 10.0, vertical: 6),
-                        //   child: Material(
-                        //     color: Colors.transparent,
-                        //     child: InkWell(
-                        //       onTap: () {
-                        //         setState(() {
-                        //           showCupertinoModalPopup(
-                        //             context: context,
-                        //             builder: (_) => SizedBox(
-                        //               width: double.infinity,
-                        //               height: 250,
-                        //               child: Row(
-                        //                 children: [
-                        //                   Expanded(
-                        //                     child: CupertinoPicker(
-                        //                       backgroundColor: Colors.white,
-                        //                       itemExtent: 30,
-                        //                       scrollController:
-                        //                           FixedExtentScrollController(
-                        //                         initialItem: 0,
-                        //                       ),
-                        //                       children: const [
-                        //                         Text('0 Adult'),
-                        //                         Text('1 Adult'),
-                        //                         Text('2 Adult'),
-                        //                         Text('3 Adult'),
-                        //                         Text('4 Adult'),
-                        //                         Text('5 Adult'),
-                        //                         Text('6 Adult'),
-                        //                       ],
-                        //                       onSelectedItemChanged:
-                        //                           (int value) {
-                        //                         setState(() {
-                        //                           _selectedValueAdult = value;
-                        //                         });
-                        //                       },
-                        //                     ),
-                        //                   ),
-                        //                   Expanded(
-                        //                     child: CupertinoPicker(
-                        //                       backgroundColor: Colors.white,
-                        //                       itemExtent: 30,
-                        //                       scrollController:
-                        //                           FixedExtentScrollController(
-                        //                         initialItem: 0,
-                        //                       ),
-                        //                       children: const [
-                        //                         Text('0 Child'),
-                        //                         Text('1 Child'),
-                        //                         Text('2 Child'),
-                        //                         Text('3 Child'),
-                        //                         Text('4 Child'),
-                        //                         Text('5 Child'),
-                        //                         Text('6 Child'),
-                        //                       ],
-                        //                       onSelectedItemChanged:
-                        //                           (int value) {
-                        //                         setState(() {
-                        //                           _selectedValueChild = value;
-                        //                         });
-                        //                       },
-                        //                     ),
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //             ),
-                        //           );
-                        //           _ispersonchoosed = true;
-                        //         });
-                        //         //add person
-                        //       },
-                        //       child: AnimatedContainer(
-                        //           duration: const Duration(milliseconds: 200),
-                        //           height: 54,
-                        //           decoration: BoxDecoration(
-                        //             color: Colors.white,
-                        //             borderRadius: BorderRadius.circular(10),
-                        //             border: Border.all(
-                        //               color: _ispersonchoosed
-                        //                   ? Colors.blue
-                        //                   : Colors.black45,
-                        //               width: 2,
-                        //             ),
-                        //           ),
-                        //           child: _ispersonchoosed
-                        //               ? Row(
-                        //                   mainAxisAlignment:
-                        //                       MainAxisAlignment.center,
-                        //                   children: [
-                        //                     const Icon(
-                        //                       Icons.group_sharp,
-                        //                       color: Color(0xFF0A8ED9),
-                        //                     ),
-                        //                     const SizedBox(width: 4),
-                        //                     Text(
-                        //                       '${_selectedValueAdult} Adult, ${_selectedValueChild} Child',
-                        //                       style: GoogleFonts.montserrat(
-                        //                         textStyle: const TextStyle(
-                        //                           color: Colors.blue,
-                        //                           fontSize: 14,
-                        //                           fontWeight: FontWeight.w700,
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ],
-                        //                 )
-                        //               : Row(
-                        //                   mainAxisAlignment:
-                        //                       MainAxisAlignment.center,
-                        //                   children: [
-                        //                     const Icon(
-                        //                       Icons.group_sharp,
-                        //                       color: Colors.black45,
-                        //                     ),
-                        //                     const SizedBox(width: 4),
-                        //                     Text(
-                        //                       'Add Guest\'s',
-                        //                       style: GoogleFonts.montserrat(
-                        //                         textStyle: const TextStyle(
-                        //                           color: Colors.black45,
-                        //                           fontSize: 14,
-                        //                           fontWeight: FontWeight.w600,
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ],
-                        //                 )),
-                        //     ),
-                        //   ),
-                        // ),
+                                if (selectedTime != null) {
+                                  setState(() {
+                                    _selectedTime =
+                                        selectedTime; // Menyimpan waktu yang dipilih
+                                    _isTimeChosen =
+                                        true; // Menandai bahwa waktu telah dipilih
+                                  });
+                                }
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                height: 54,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(1, 2),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                    color: _isTimeChosen
+                                        ? AppTheme.darkBlue
+                                        : Colors.black26,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.access_time,
+                                      color: AppTheme.darkBlue,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      _isTimeChosen
+                                          ? '${_selectedTime!.hour.toString().padLeft(2, '0')}:${_selectedTime!.minute.toString().padLeft(2, '0')}' // Menampilkan waktu yang dipilih
+                                          : 'Pick Time', // Placeholder saat waktu belum dipilih
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: AppTheme.darkBlue,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
@@ -629,390 +555,6 @@ class _BookingPageState extends State<BookingPage> {
                           },
                           onMaxParticipantChanged: _updateMaxParticipant,
                         ),
-
-                        ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: _Listdata.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin:
-                                    const EdgeInsets.fromLTRB(24, 0, 24, 20),
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset: const Offset(1, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    ClipRect(
-                                      child: AnimatedContainer(
-                                        duration:
-                                            const Duration(milliseconds: 200),
-                                        height: 190,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: 142,
-                                                      height: 102,
-                                                      margin: const EdgeInsets
-                                                          .fromLTRB(
-                                                          12, 12, 2, 10),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadiusDirectional
-                                                                .circular(10),
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/images/room.jpeg'),
-                                                            fit: BoxFit.cover),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      margin: const EdgeInsets
-                                                          .fromLTRB(
-                                                          10, 12, 0, 10),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                    _Listdata[
-                                                                            index]
-                                                                        [
-                                                                        'tipe_kamar'],
-                                                                    style: GoogleFonts
-                                                                        .montserrat(
-                                                                      textStyle:
-                                                                          const TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        letterSpacing:
-                                                                            -0.6,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical:
-                                                                            2.0),
-                                                                    child:
-                                                                        Container(
-                                                                      constraints:
-                                                                          const BoxConstraints(
-                                                                              maxWidth: 172),
-                                                                      child:
-                                                                          Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          const SizedBox(
-                                                                              height: 8),
-                                                                          Row(
-                                                                            children: [
-                                                                              const Icon(Icons.king_bed_rounded, color: Colors.black54, size: 16),
-                                                                              const SizedBox(width: 8),
-                                                                              Text(
-                                                                                "${_Listdata[index]['bedroom']} Bed",
-                                                                                style: GoogleFonts.montserrat(
-                                                                                  textStyle: const TextStyle(
-                                                                                    color: Colors.black54,
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w500,
-                                                                                    letterSpacing: -0.6,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              const Icon(Icons.group_rounded, color: Colors.black54, size: 16),
-                                                                              const SizedBox(width: 8),
-                                                                              Text(
-                                                                                "${_Listdata[index]['kapasitas']} Guest's/Room",
-                                                                                style: GoogleFonts.montserrat(
-                                                                                  textStyle: const TextStyle(
-                                                                                    color: Colors.black54,
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w500,
-                                                                                    letterSpacing: -0.6,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          12, 0, 0, 8),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Total Payment',
-                                                        style: GoogleFonts
-                                                            .montserrat(
-                                                          textStyle:
-                                                              const TextStyle(
-                                                            color:
-                                                                Colors.black45,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            letterSpacing: -0.6,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text.rich(
-                                                        TextSpan(
-                                                            text:
-                                                                'Rp ${_Listdata[index]['harga']}/',
-                                                            style: GoogleFonts
-                                                                .montserrat(
-                                                              textStyle:
-                                                                  const TextStyle(
-                                                                color: Color(
-                                                                    0xFF225B7B),
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                letterSpacing:
-                                                                    -0.6,
-                                                              ),
-                                                            ),
-                                                            children: [
-                                                              TextSpan(
-                                                                text: 'Night',
-                                                                style: GoogleFonts
-                                                                    .montserrat(
-                                                                  textStyle:
-                                                                      const TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ]),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 0, 8, 8),
-                                                  child: booleanList[index]
-                                                      ? ElevatedButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              booleanList[
-                                                                      index] =
-                                                                  false;
-                                                              hargaa =
-                                                                  _Listdata[
-                                                                          index]
-                                                                      ['harga'];
-                                                              harga = int.parse(
-                                                                  hargaa);
-                                                              totalHarga +=
-                                                                  harga;
-                                                              hargaFix =
-                                                                  '$totalHarga';
-                                                              selectedRoomIds
-                                                                  .add(_Listdata[
-                                                                          index]
-                                                                      ['id']);
-                                                              roomsIds =
-                                                                  _Listdata[
-                                                                          index]
-                                                                      ['id'];
-                                                              print(
-                                                                  '${totalHarga}, ${selectedRoomIds}');
-                                                            });
-                                                          },
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                const Color(
-                                                                    0xFF225B7B),
-                                                            elevation: 2,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10.0),
-                                                            ),
-                                                          ),
-                                                          child: Text(
-                                                            'Select',
-                                                            style: GoogleFonts
-                                                                .montserrat(
-                                                              textStyle:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                letterSpacing:
-                                                                    -0.6,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : ElevatedButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              booleanList[
-                                                                  index] = true;
-                                                              hargaa =
-                                                                  _Listdata[
-                                                                          index]
-                                                                      ['harga'];
-                                                              harga = int.parse(
-                                                                  hargaa);
-                                                              totalHarga -=
-                                                                  harga;
-                                                              hargaFix =
-                                                                  '$totalHarga';
-                                                              selectedRoomIds
-                                                                  .remove(_Listdata[
-                                                                          index]
-                                                                      ['id']);
-                                                              roomsIds = '';
-                                                              print(
-                                                                  '${totalHarga}, ${selectedRoomIds}');
-                                                            });
-                                                          },
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.white
-                                                                    .withOpacity(
-                                                                        0.84),
-                                                            elevation: 2,
-                                                            side: BorderSide(
-                                                                color: const Color(
-                                                                    0xFF225B7B),
-                                                                width: 1.0),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10.0),
-                                                            ),
-                                                          ),
-                                                          child: Text(
-                                                            'Selected',
-                                                            style: GoogleFonts
-                                                                .montserrat(
-                                                              textStyle:
-                                                                  const TextStyle(
-                                                                color: Color(
-                                                                    0xFF225B7B),
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                letterSpacing:
-                                                                    -0.6,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
                         const SizedBox(
                           height: 20,
                         ),
@@ -1421,7 +963,10 @@ class _BookingPageState extends State<BookingPage> {
             left: 10,
             child: ElevatedButton(
               onPressed: () {
-                if (int.parse(_maxParController.text) == 0 || totalHarga == 0) {
+                if (int.parse(_maxParController.text) == 0 ||
+                    totalHarga == 0 ||
+                    !_isDateChosen ||
+                    !_isTimeChosen) {
                   //CODE TEST
                   // Navigator.of(context).push(
                   //   MaterialPageRoute(
@@ -1465,13 +1010,16 @@ class _BookingPageState extends State<BookingPage> {
                       MaterialPageRoute(
                         builder: (context) => PaymentPage(
                           id: roomsIds,
-                          hotel_id: widget.hotel_id,
                           url_foto: widget.url_foto,
-                          hargaTotal: hargaFix,
-                          startDate: startdateNew,
-                          endDate: enddateNew,
-                          adultValue: _selectedValueAdult,
-                          childValue: _selectedValueChild,
+                          hargaTotal: totalHarga.toString(),
+                          bookTime:
+                              '${_selectedTime!.hour.toString().padLeft(2, '0')}:${_selectedTime!.minute.toString().padLeft(2, '0')}',
+                          bookDate: formattedDate,
+                          largeRaftQuantity: largeRaftQuantity,
+                          mediumRaftQuantity: mediumRaftQuantity,
+                          smallRaftQuantity: smallRaftQuantity,
+                          participantValue:
+                              int.tryParse(_maxParController.text) ?? 0,
                           dbstartDate: formattedTanggal,
                           dbendDate: formattedTanggalbesok,
                           sellersid: widget.sellersid,
@@ -1483,13 +1031,16 @@ class _BookingPageState extends State<BookingPage> {
                       MaterialPageRoute(
                         builder: (context) => PaymentPage(
                           id: roomsIds,
-                          hotel_id: widget.hotel_id,
                           url_foto: widget.url_foto,
-                          hargaTotal: hargaFix,
-                          startDate: startdateNew,
-                          endDate: enddateNew,
-                          adultValue: _selectedValueAdult,
-                          childValue: _selectedValueChild,
+                          hargaTotal: totalHarga.toString(),
+                          bookTime:
+                              '${_selectedTime!.hour.toString().padLeft(2, '0')}:${_selectedTime!.minute.toString().padLeft(2, '0')}',
+                          bookDate: formattedDate,
+                          largeRaftQuantity: largeRaftQuantity,
+                          mediumRaftQuantity: mediumRaftQuantity,
+                          smallRaftQuantity: smallRaftQuantity,
+                          participantValue:
+                              int.tryParse(_maxParController.text) ?? 0,
                           dbstartDate: widget.tanggalAwal!,
                           dbendDate: widget.tanggalAkhir!,
                           sellersid: widget.sellersid,

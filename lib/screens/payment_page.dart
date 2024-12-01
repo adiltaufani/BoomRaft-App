@@ -15,29 +15,31 @@ import 'package:http/http.dart' as http;
 class PaymentPage extends StatefulWidget {
   static const String routeName = '/payment-page';
   String id;
-  String hotel_id;
   String hargaTotal;
-  String startDate;
-  String endDate;
+  String bookTime;
+  String bookDate;
   String dbstartDate;
   String dbendDate;
   String sellersid;
-  int adultValue;
-  int childValue;
+  int smallRaftQuantity;
+  int mediumRaftQuantity;
+  int largeRaftQuantity;
+  int participantValue;
   String url_foto;
 
   PaymentPage({
     required this.id,
-    required this.hotel_id,
     required this.url_foto,
     required this.hargaTotal,
-    required this.startDate,
-    required this.endDate,
+    required this.bookTime,
+    required this.bookDate,
     required this.dbstartDate,
     required this.sellersid,
     required this.dbendDate,
-    required this.adultValue,
-    required this.childValue,
+    required this.smallRaftQuantity,
+    required this.mediumRaftQuantity,
+    required this.largeRaftQuantity,
+    required this.participantValue,
   });
 
   @override
@@ -62,64 +64,34 @@ class _PaymentPageState extends State<PaymentPage> {
   String uid = '';
   bool firstnameTrigger = true;
   bool isTransferBankExpanded = false;
-  List _Listdata = [];
+  bool smallraftvis = false;
+  bool mediumRaftVis = false;
+  bool largeRaftVis = false;
+
   Future<Map<String, dynamic>>? userProfile;
   Map<String, dynamic> userData = {};
-
-  Future _getdata() async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-            '${ipaddr}/ta_projek/crudtaprojek/payment_rooms.php?uid=${widget.hotel_id}&id=${widget.id}'),
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        fetchData();
-        setState(() {
-          _Listdata = data;
-          isLoading = false;
-          print(_Listdata);
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void _addBookingIndicator() async {
-    setState(() {
-      isLoading = true;
-    });
-    await _addBooking();
-    await Future.delayed(Duration(seconds: 5));
-    setState(() {
-      isLoading = false;
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PaymentUi(
-            uid: uid,
-            productName: ' widget.nama_penginapan',
-            hargaTotal: widget.hargaTotal,
-            customerName: '${_firstname} ${lastname}',
-            customerPhone: number!,
-            customerAddress: address!,
-            startDate: widget.startDate,
-            endDate: widget.endDate,
-          ),
-        ),
-      );
-    });
-  }
 
   @override
   void initState() {
     userProfile = UserServices().getProfile();
     super.initState();
+    if (widget.smallRaftQuantity > 0) {
+      smallraftvis = true;
+    }
+    if (widget.mediumRaftQuantity > 0) {
+      mediumRaftVis = true;
+    }
+    if (widget.largeRaftQuantity > 0) {
+      largeRaftVis = true;
+    }
   }
 
-  Future<void> fetchData() async {
-    await fetchUserData();
-    setState(() {});
+  String formatRupiah(int price) {
+    if (price == 0) {
+      return 'Rp. -';
+    } else {
+      return 'Rp. ${price.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match match) => '${match[1]}.')}';
+    }
   }
 
   @override
@@ -148,7 +120,7 @@ class _PaymentPageState extends State<PaymentPage> {
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
               title: Text(
-                '1 of 2: Review Booking',
+                'Review Booking',
                 style: GoogleFonts.montserrat(
                   textStyle: const TextStyle(
                     color: Colors.black,
@@ -176,12 +148,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 ),
               ),
             )),
-        body:
-            // isLoading
-            //     ? Center(child: CircularProgressIndicator())
-            //     : _Listdata.isNotEmpty
-            //         ?
-            Stack(
+        body: Stack(
           children: [
             Container(
               decoration: const BoxDecoration(
@@ -225,17 +192,28 @@ class _PaymentPageState extends State<PaymentPage> {
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                       color: Colors.black87,
-                                      fontSize: 16,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: -0.6,
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  "BOOKTIME",
+                                  "Time ",
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: TextStyle(
+                                      color: Colors.black.withOpacity(0.7),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: -0.6,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  "${widget.bookTime} - ${widget.bookDate}",
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
-                                      color: Colors.black54,
+                                      color: Colors.black38,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       letterSpacing: -0.6,
@@ -246,33 +224,53 @@ class _PaymentPageState extends State<PaymentPage> {
                                 Text(
                                   "Raft Type ",
                                   style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                      color: Colors.black87,
+                                    textStyle: TextStyle(
+                                      color: Colors.black.withOpacity(0.7),
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: -0.6,
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "2 Small Raft",
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: -0.6,
+                                Visibility(
+                                  visible: smallraftvis,
+                                  child: Text(
+                                    "${widget.smallRaftQuantity} Small Raft",
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                        color: Colors.black38,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: -0.6,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Text(
-                                  "1 Medium Raft",
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: -0.6,
+                                Visibility(
+                                  visible: mediumRaftVis,
+                                  child: Text(
+                                    "${widget.mediumRaftQuantity} Medium Raft",
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                        color: Colors.black38,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: -0.6,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: largeRaftVis,
+                                  child: Text(
+                                    "${widget.largeRaftQuantity} Large Raft",
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                        color: Colors.black38,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: -0.6,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -280,8 +278,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                 Text(
                                   "Total Participant", //Deluxe Room
                                   style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                      color: Colors.black87,
+                                    textStyle: TextStyle(
+                                      color: Colors.black.withOpacity(0.7),
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: -0.6,
@@ -289,10 +287,10 @@ class _PaymentPageState extends State<PaymentPage> {
                                   ),
                                 ),
                                 Text(
-                                  "13 People", //Deluxe Room
+                                  "${widget.participantValue} people", //Deluxe Room
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
-                                      color: Colors.black54,
+                                      color: Colors.black38,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       letterSpacing: -0.6,
@@ -352,12 +350,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Icon(
-                                    Icons.calendar_month_rounded,
+                                    Icons.access_time,
                                     color: Color(0xFF225B7B),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    '${widget.startDate} - ${widget.endDate}',
+                                    '${widget.bookTime} - ${widget.bookDate}',
                                     style: GoogleFonts.montserrat(
                                       textStyle: const TextStyle(
                                         color: Color(0xFF225B7B),
@@ -1052,7 +1050,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "${widget.hargaTotal}",
+                              formatRupiah(int.parse(widget.hargaTotal)),
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                   color: Colors.white,

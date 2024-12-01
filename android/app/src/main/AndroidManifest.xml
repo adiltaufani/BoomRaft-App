@@ -3,7 +3,7 @@
     package="com.your.package.name">
 
     <application
-        android:label="Bookit"
+        android:label="Boom Raft"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
