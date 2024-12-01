@@ -140,6 +140,7 @@ class _BookingPageState extends State<BookingPage> {
   String formattedEndDate = '';
   String startdateNew = '';
   String enddateNew = '';
+  bool _isboatadded = true;
   int _selectedValueAdult = 0;
   int _selectedValueChild = 0;
   List<String> selectedRoomIds = [];
@@ -180,6 +181,12 @@ class _BookingPageState extends State<BookingPage> {
 
       formatRupiah(totalHarga);
       _showFlash = true;
+
+      // if (maxParticipant > 0) {
+      //   _isboatadded = true;
+      // } else {
+      //   _isboatadded = false;
+      // }
     });
 
     Future.delayed(const Duration(milliseconds: 600), () {
@@ -1293,104 +1300,111 @@ class _BookingPageState extends State<BookingPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            'Total Participant',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                color: Colors.black87,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                        Visibility(
+                          visible: _isboatadded,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: Text(
+                              'Total Participant',
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          width: double.maxFinite,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 3,
-                                offset: const Offset(1, 2),
-                              ),
-                            ],
-                            border: Border.all(color: Colors.black38, width: 1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Transform.scale(
-                                scale: 1.3,
-                                child: Checkbox(
-                                  value: docuCheckBox,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      docuCheckBox = value ?? false;
-                                      if (docuCheckBox) {
-                                        totalHarga +=
-                                            100000; // Tambahkan harga dokumentasi jika checkbox dipilih
-                                      } else {
-                                        totalHarga -=
-                                            100000; // Kurangi harga dokumentasi jika checkbox tidak dipilih
-                                      }
-                                      _showFlash = true;
+                        Visibility(
+                          visible: _isboatadded,
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            width: double.maxFinite,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: const Offset(1, 2),
+                                ),
+                              ],
+                              border:
+                                  Border.all(color: Colors.black38, width: 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Transform.scale(
+                                  scale: 1.3,
+                                  child: Checkbox(
+                                    value: docuCheckBox,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        docuCheckBox = value ?? false;
+                                        if (docuCheckBox) {
+                                          totalHarga +=
+                                              100000; // Tambahkan harga dokumentasi jika checkbox dipilih
+                                        } else {
+                                          totalHarga -=
+                                              100000; // Kurangi harga dokumentasi jika checkbox tidak dipilih
+                                        }
+                                        _showFlash = true;
 
-                                      Future.delayed(
-                                          const Duration(milliseconds: 600),
-                                          () {
-                                        setState(() {
-                                          _showFlash = false;
+                                        Future.delayed(
+                                            const Duration(milliseconds: 600),
+                                            () {
+                                          setState(() {
+                                            _showFlash = false;
+                                          });
                                         });
+                                        print(totalHarga);
                                       });
-                                      print(totalHarga);
-                                    });
-                                  },
-                                  activeColor: AppTheme.darkBlue,
-                                  side: const BorderSide(
-                                    color: Colors.black54,
+                                    },
+                                    activeColor: AppTheme.darkBlue,
+                                    side: const BorderSide(
+                                      color: Colors.black54,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Documentation',
-                                    style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Documentation',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    '+ Rp. 100.000,00',
-                                    style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
+                                    Text(
+                                      '+ Rp. 100.000,00',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -1407,60 +1421,60 @@ class _BookingPageState extends State<BookingPage> {
             left: 10,
             child: ElevatedButton(
               onPressed: () {
-                if (_selectedValueAdult == 0 || totalHarga == 0) {
+                if (int.parse(_maxParController.text) == 0 || totalHarga == 0) {
                   //CODE TEST
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PaymentPage(
-                        id: roomsIds,
-                        hotel_id: widget.hotel_id,
-                        url_foto: widget.url_foto,
-                        hargaTotal: hargaFix,
-                        startDate: startdateNew,
-                        endDate: enddateNew,
-                        adultValue: _selectedValueAdult,
-                        childValue: _selectedValueChild,
-                        dbstartDate: formattedTanggal,
-                        dbendDate: formattedTanggalbesok,
-                        sellersid: widget.sellersid,
-                      ),
-                    ),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => PaymentPage(
+                  //       id: roomsIds,
+                  //       hotel_id: widget.hotel_id,
+                  //       url_foto: widget.url_foto,
+                  //       hargaTotal: hargaFix,
+                  //       startDate: startdateNew,
+                  //       endDate: enddateNew,
+                  //       adultValue: _selectedValueAdult,
+                  //       childValue: _selectedValueChild,
+                  //       dbstartDate: formattedTanggal,
+                  //       dbendDate: formattedTanggalbesok,
+                  //       sellersid: widget.sellersid,
+                  //     ),
+                  //   ),
+                  // );
 
-                  //CODE BENER
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       return AlertDialog(
-                  //         title: Text('Input Tidak Sesuai'),
-                  //         content: Text(
-                  //             'Mohon piih tanggal, jumlah orang, dan pilih kamar'),
-                  //         actions: [
-                  //           TextButton(
-                  //               onPressed: () {
-                  //                 Navigator.pop(context);
-                  //               },
-                  //               child: Text('ok'))
-                  //         ],
-                  //       );
-                  //     });
+                  // CODE BENER
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Input Tidak Sesuai'),
+                          content: const Text(
+                              'Mohon masukan boat dan jumlah partisipan'),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('ok'))
+                          ],
+                        );
+                      });
                 } else {
                   if (widget.tanggalAwal == null &&
                       widget.tanggalAkhir == null) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => PaymentPage(
-                          id: '',
-                          hotel_id: '',
-                          hargaTotal: '',
-                          startDate: '',
-                          url_foto: '',
-                          endDate: '',
-                          adultValue: 0,
-                          childValue: 0,
-                          sellersid: '',
-                          dbendDate: '',
-                          dbstartDate: '',
+                          id: roomsIds,
+                          hotel_id: widget.hotel_id,
+                          url_foto: widget.url_foto,
+                          hargaTotal: hargaFix,
+                          startDate: startdateNew,
+                          endDate: enddateNew,
+                          adultValue: _selectedValueAdult,
+                          childValue: _selectedValueChild,
+                          dbstartDate: formattedTanggal,
+                          dbendDate: formattedTanggalbesok,
+                          sellersid: widget.sellersid,
                         ),
                       ),
                     );
@@ -1497,7 +1511,7 @@ class _BookingPageState extends State<BookingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Stack(
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     children: [
                       // Flash background
                       AnimatedOpacity(
@@ -1505,7 +1519,7 @@ class _BookingPageState extends State<BookingPage> {
                         duration: const Duration(milliseconds: 200),
                         child: Container(
                           height: 28, // Sesuaikan dengan ukuran teks
-                          width: 120, // Sesuaikan dengan lebar teks
+                          width: 110, // Sesuaikan dengan lebar teks
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2), // Warna flash
                             borderRadius: BorderRadius.circular(20), // Opsional
@@ -1513,14 +1527,17 @@ class _BookingPageState extends State<BookingPage> {
                         ),
                       ),
                       // Teks utama
-                      Text(
-                        formatRupiah(totalHarga),
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: -0.6,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          formatRupiah(totalHarga),
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: -0.6,
+                            ),
                           ),
                         ),
                       ),

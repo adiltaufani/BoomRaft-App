@@ -60,8 +60,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             onGenerateRoute: (settings) => generateRoute(settings),
             home: snapshot.data == null
-                ? MainScreen()
-                : LoginScreen(), // Redirect to appropriate screen based on auth state
+                ? LoginScreen()
+                : MainScreen(), // Redirect to appropriate screen based on auth state
           );
         }
       },

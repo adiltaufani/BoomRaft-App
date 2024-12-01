@@ -5,6 +5,7 @@ import 'package:flutter_project/screens/main_screen.dart';
 import 'package:flutter_project/screens/booking_page.dart';
 import 'package:flutter_project/screens/home_screen.dart';
 import 'package:flutter_project/screens/otp_screen.dart';
+import 'package:flutter_project/screens/waiting_payment_page.dart';
 import 'package:flutter_project/zzunused/nearfromyou/screens/near_from_you.dart';
 import 'package:flutter_project/screens/notification_page.dart';
 import 'package:flutter_project/screens/payment_success.dart';
@@ -120,6 +121,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const SettingPage(),
+      );
+    case WaitingPaymentPage.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const WaitingPaymentPage(),
       );
     case OtpScreen.routeName:
       return MaterialPageRoute(

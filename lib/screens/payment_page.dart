@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/payment_success.dart';
 import 'package:flutter_project/screens/payment_gateway_screen.dart';
+import 'package:flutter_project/screens/waiting_payment_page.dart';
+import 'package:flutter_project/services/user_services.dart';
 import 'package:flutter_project/variables.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -60,6 +63,8 @@ class _PaymentPageState extends State<PaymentPage> {
   bool firstnameTrigger = true;
   bool isTransferBankExpanded = false;
   List _Listdata = [];
+  Future<Map<String, dynamic>>? userProfile;
+  Map<String, dynamic> userData = {};
 
   Future _getdata() async {
     try {
@@ -108,7 +113,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   void initState() {
-    _getdata();
+    userProfile = UserServices().getProfile();
     super.initState();
   }
 
@@ -119,6 +124,25 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: userProfile,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return buildLoading(context);
+            // } else if (snapshot.hasError) {
+            //   return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            userData = snapshot.data!;
+          }
+          return buildPage(context);
+        });
+  }
+
+  Widget buildLoading(BuildContext context) {
+    return CircularProgressIndicator();
+  }
+
+  Widget buildPage(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
@@ -453,7 +477,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                 child: Column(
                                   children: [
                                     TextFormField(
-                                      initialValue: email,
+                                      initialValue:
+                                          '${userData['email'] ?? "Loading"} ',
                                       decoration: InputDecoration(
                                         labelText: 'Email Address',
                                         hintText: 'email',
@@ -550,7 +575,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                           child: Container(
                                             margin: EdgeInsets.only(right: 8),
                                             child: TextFormField(
-                                              initialValue: _firstname,
+                                              initialValue:
+                                                  '${userData['name'] ?? "Loading"} ',
                                               decoration: InputDecoration(
                                                 labelText: 'First Name',
                                                 labelStyle:
@@ -590,7 +616,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                         Expanded(
                                           flex: 4,
                                           child: TextFormField(
-                                            initialValue: lastname,
+                                            initialValue:
+                                                '${userData['name'] ?? "Loading"} ',
                                             decoration: InputDecoration(
                                               labelText: 'Last Name',
                                               labelStyle:
@@ -629,7 +656,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                       ],
                                     ),
                                     TextFormField(
-                                      initialValue: number,
+                                      initialValue:
+                                          '${userData['phone'] ?? "Loading"} ',
                                       decoration: InputDecoration(
                                         labelText: 'Phone Number',
                                         labelStyle: GoogleFonts.montserrat(
@@ -664,7 +692,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                       },
                                     ),
                                     TextFormField(
-                                      initialValue: address,
+                                      initialValue:
+                                          '${userData['city'] ?? "Loading"} ',
                                       decoration: InputDecoration(
                                         labelText: 'City of Origin',
                                         labelStyle: GoogleFonts.montserrat(
@@ -1007,7 +1036,8 @@ class _PaymentPageState extends State<PaymentPage> {
                           left: 20, right: 20, bottom: 16),
                       child: ElevatedButton(
                         onPressed: () {
-                          _addBookingIndicator();
+                          Navigator.pushNamed(
+                              context, WaitingPaymentPage.routeName);
                         },
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size(double.infinity, 52),
